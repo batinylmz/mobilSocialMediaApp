@@ -1,14 +1,16 @@
 import React from 'react';
-import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
-import CreatePostScreen from './src/screens/CreatePostScreen';
+import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+import CreatePostScreen from './src/screens/CreatePostScreen'; // Default import
 
 const App = () => {
     return (
-        // SafeAreaView çentiğin (notch) arkasında kalmasını engeller
         <SafeAreaView style={styles.container}>
-            {/* StatusBar uygulamanın en üstündeki saat/pil çubuğudur */}
+            {/* Üst barın (saat/pil) beyaz arka planda siyah ikonlarla görünmesi için */}
             <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
-            <CreatePostScreen />
+
+            <View style={styles.content}>
+                <CreatePostScreen />
+            </View>
         </SafeAreaView>
     );
 };
@@ -16,7 +18,10 @@ const App = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF', // Arka plan rengi
+        backgroundColor: '#FFFFFF',
+    },
+    content: {
+        flex: 1,
     },
 });
 
