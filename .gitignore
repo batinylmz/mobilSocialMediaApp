@@ -1,0 +1,13 @@
+# Temel Klasörler
+node_modules/
+.idea/
+
+# Android ve iOS Derleme Çöpleri
+android/build/
+android/app/build/
+android/.gradle/
+ios/Pods/
+ios/build/
+
+# Mac Sistem Dosyaları
+.DS_Store
