@@ -15,7 +15,7 @@ const PostDetailScreen = () => {
 
                 <View style={styles.logoContainer}>
                     <Image
-                        source={require('../assets/nexus-logo.png')}
+                        source={require('../../assets/nexus-logo.png')}
                         style={styles.logo}
                         resizeMode="cover"
                     />
@@ -55,26 +55,16 @@ const PostDetailScreen = () => {
                         style={styles.mediaImage}
                         resizeMode="cover"
                     />
-
-                    {/* Video Kontrol Arayüzü (Resmin Üzerine Biniyor) */}
                     <View style={styles.videoControlsOverlay}>
-
-                        {/* İlerleme Çubuğu (Progress Bar) */}
                         <View style={styles.progressBarBg}>
                             <View style={styles.progressBarFill} />
                         </View>
-
-                        {/* Alt Kontrol Paneli */}
                         <View style={styles.controlRow}>
-                            {/* Sol: Play İkonu */}
                             <Icon name="play" size={18} color="#FFFFFF" />
-
-                            {/* Sağ: Süre ve Diğer İkonlar */}
                             <View style={styles.rightControls}>
                                 <Text style={styles.timeText}>0:45 / 1:30</Text>
                                 <Icon name="volume-medium" size={14} color="#FFFFFF" style={styles.controlIcon} />
                                 <Icon name="settings-outline" size={14} color="#FFFFFF" style={styles.controlIcon} />
-                                {/* Figma'daki pencere ikonu için benzer bir ikon */}
                                 <Icon name="browsers-outline" size={14} color="#FFFFFF" style={styles.controlIcon} />
                                 <Icon name="expand-outline" size={14} color="#FFFFFF" style={styles.controlIcon} />
                             </View>
@@ -82,9 +72,44 @@ const PostDetailScreen = () => {
                     </View>
                 </View>
 
-            </ScrollView>
-        </SafeAreaView>
-    );
+                {/* 5. Kısım: Etiketler ve Etkileşim Butonları */}
+                <View style={styles.interactionSection}>
+
+                    {/* Etiketler (Tags) */}
+                    <View style={styles.tagsContainer}>
+                        <View style={styles.tag}>
+                            <Text style={styles.tagText}>#history</Text>
+                        </View>
+                        <View style={styles.tag}>
+                            <Text style={styles.tagText}>#türkiye</Text>
+                        </View>
+                        <View style={styles.tag}>
+                            <Text style={styles.tagText}>#success</Text>
+                        </View>
+                        <View style={styles.tag}>
+                            <Text style={styles.tagText}>#stealth fighter</Text>
+                        </View>
+                    </View>
+
+                    {/* Aksiyon Butonları (Beğen ve Kaydet) */}
+                    <View style={styles.actionButtonsContainer}>
+                        {/* Beğen Butonu */}
+                        <TouchableOpacity style={styles.actionButton}>
+                            <Icon name="heart-outline" size={20} color={COLORS.textMain} />
+                            <Text style={styles.actionButtonText}>1.3M</Text>
+                        </TouchableOpacity>
+
+                    {/* Kaydet Butonu (Figma'daki 36x30 ölçüsü) */}
+                    <TouchableOpacity style={styles.bookmarkButton}>
+                        <Icon name="bookmark-outline" size={20} color={COLORS.textMain} />
+                    </TouchableOpacity>
+                </View>
+
+            </View>
+
+        </ScrollView>
+</SafeAreaView>
+);
 };
 
 const styles = StyleSheet.create({
@@ -104,56 +129,67 @@ const styles = StyleSheet.create({
     textSection: { paddingHorizontal: 15, marginBottom: 15 },
     postTitle: { fontSize: 16, fontWeight: 'bold', color: COLORS.textMain, marginBottom: 10, lineHeight: 22 },
     postParagraph: { fontSize: 14, color: COLORS.textMain, lineHeight: 20 },
+    mediaWrapper: { width: 396, height: 220, alignSelf: 'center', borderRadius: 10, overflow: 'hidden', backgroundColor: '#000' },
+    mediaImage: { width: '100%', height: '100%' },
+    videoControlsOverlay: { position: 'absolute', bottom: 0, left: 0, right: 0, padding: 10 },
+    progressBarBg: { height: 3, backgroundColor: 'rgba(255, 255, 255, 0.3)', borderRadius: 1.5, marginBottom: 8 },
+    progressBarFill: { width: '50%', height: '100%', backgroundColor: '#FFFFFF', borderRadius: 1.5 },
+    controlRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+    rightControls: { flexDirection: 'row', alignItems: 'center' },
+    timeText: { color: '#FFFFFF', fontSize: 10, marginRight: 12 },
+    controlIcon: { marginLeft: 12 },
 
-    //  (MEDYA ALANI) bu sekilde tasarlandi.
-    mediaWrapper: {
-        width: 396,
-        height: 220,
-        alignSelf: 'center',
-        borderRadius: 10,
-        overflow: 'hidden', // Köşelerin yuvarlatılmasını zorunlu kılar
-        backgroundColor: '#000', // Resim yüklenene kadar siyah arkaplan
+    // --- YENİ EKLENEN STİLLER (ETİKETLER VE BUTONLAR) ---
+    interactionSection: {
+        paddingHorizontal: 15,
+        marginTop: 15,
     },
-    mediaImage: {
-        width: '100%',
-        height: '100%',
+    tagsContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap', // Etiketler sığmazsa alt satıra geçsin
+        marginBottom: 15,
     },
-    videoControlsOverlay: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        padding: 10,
-        // Alt kısma hafif siyah bir gradient/gölge etkisi vermek iyi olur ama şimdilik Figma'daki gibi sade bırakıyoruz
-    },
-    progressBarBg: {
-        height: 3,
-        backgroundColor: 'rgba(255, 255, 255, 0.3)',
-        borderRadius: 1.5,
+    tag: {
+        backgroundColor: '#93C5FD', // Figma'daki mavi tonuna yakın
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        borderRadius: 15, // Yuvarlak hatlar
+        marginRight: 8,
         marginBottom: 8,
     },
-    progressBarFill: {
-        width: '50%', // 0:45 / 1:30 olduğu için yarısı dolu
-        height: '100%',
-        backgroundColor: '#FFFFFF',
-        borderRadius: 1.5,
+    tagText: {
+        color: '#1E3A8A', // Koyu mavi yazı
+        fontSize: 12,
+        fontWeight: '600',
     },
-    controlRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    rightControls: {
+    actionButtonsContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginBottom: 20, // Altındaki yorumlara boşluk
     },
-    timeText: {
-        color: '#FFFFFF',
-        fontSize: 10, // Figma'daki çok küçük metin boyutuna uygun
-        marginRight: 12,
+    actionButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: COLORS.tagBackground,
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        borderRadius: 8,
+        marginRight: 10,
+        height: 30,
     },
-    controlIcon: {
-        marginLeft: 12, // İkonlar arası boşluk
+    actionButtonText: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        color: COLORS.textMain,
+        marginLeft: 6,
+    },
+    bookmarkButton: {
+        backgroundColor: COLORS.tagBackground,
+        width: 36,
+        height: 30,
+        borderRadius: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 
