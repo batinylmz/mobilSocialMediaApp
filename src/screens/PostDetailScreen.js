@@ -138,6 +138,12 @@ const PostDetailScreen = () => {
             </View>
 
         </ScrollView>
+            <View style={styles.bottomNav}>
+                <TouchableOpacity style={styles.navIconContainer}>
+                    <Icon name="home" size={26} color="#000000" />
+                </TouchableOpacity>
+                </View>
+
 </SafeAreaView>
 );
 };
