@@ -261,6 +261,47 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingRight: 2,
     },
+    // --- YENİ EKLENEN STİLLER (YORUM KARTI) ---
+    commentCard: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 60,
+        backgroundColor: 'rgba(229, 228, 226, 0.3)', // #E5E4E2 %30 Opaklık
+        borderWidth: 1,
+        borderColor: 'rgba(0, 0, 0, 0.3)', // Stroke rengi Siyah %30 Opaklık
+        borderRadius: 5,
+        paddingHorizontal: 15,
+        marginHorizontal: 15, // Ekran kenarlarından boşluk
+        marginBottom: 30, // Sayfa sonuna doğru boşluk bırakalım
+    },
+    commentAvatar: {
+        width: 36,
+        height: 36,
+        borderRadius: 18,
+        backgroundColor: '#1E3A8A', // Mavi tonumuz
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 12,
+    },
+    commentAvatarText: {
+        color: '#FFFFFF',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    commentContent: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    commentAuthor: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: COLORS.textMain,
+    },
+    commentText: {
+        fontSize: 13,
+        color: COLORS.textMain,
+        marginTop: 2,
+    },
 });
 
 export default PostDetailScreen;
