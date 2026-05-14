@@ -212,6 +212,42 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    // Yeni ekledigim styleler
+    commentsSection: {
+        paddingHorizontal: 15,
+        marginTop: 5,
+    },
+    commentsHeader: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: COLORS.textMain,
+        marginBottom: 12,
+    },
+    commentInputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 20,
+    },
+    commentInput: {
+        flex: 1,
+        height: 36,
+        backgroundColor: 'rgba(229, 228, 226, 0.5)', // #E5E4E2 %50 Opaklık
+        borderRadius: 5,
+        paddingHorizontal: 15,
+        marginRight: 10, // Gönder butonu ile arasına boşluk
+        fontSize: 14,
+        color: COLORS.textMain,
+    },
+    sendButton: {
+        width: 36,
+        height: 36,
+        backgroundColor: 'rgba(30, 58, 138, 0.6)', // #1E3A8A %60 Opaklık
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingRight: 2,
+    },
 });
 
 export default PostDetailScreen;
