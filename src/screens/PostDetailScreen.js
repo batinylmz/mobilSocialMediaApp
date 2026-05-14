@@ -1,20 +1,18 @@
 import React from 'react';
-import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '../constants/theme';
 
 const PostDetailScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
-            {/* 1. Kısım: Üst Bar (Header) - Figma'ya Göre Güncellendi */}
+            //üst bar kismi
             <View style={styles.header}>
-                {/* Sol Taraf: Geri Butonu ve Başlık */}
                 <TouchableOpacity style={styles.backButtonContainer}>
                     <Icon name="chevron-back" size={24} color={COLORS.textMain} />
                     <Text style={styles.headerTitle}>Gönderi Detayı</Text>
                 </TouchableOpacity>
 
-                {/* Orta Kısım: Nexus Logosu (Figma: 39.87 x 37) */}
                 <View style={styles.logoContainer}>
                     <Image
                         source={require('../../assets/nexus-logo.png')}
@@ -24,6 +22,24 @@ const PostDetailScreen = () => {
                 </View>
             </View>
 
+            // kaydirilabilir ekran için
+            <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
+
+
+                <View style={styles.profileSection}>
+
+                    <View style={styles.avatar}>
+                        <Text style={styles.avatarText}>U16</Text>
+                    </View>
+
+
+                    <View style={styles.userInfo}>
+                        <Text style={styles.userName}>Kullanıcı 16</Text>
+                        <Text style={styles.userHandle}>@user162327</Text>
+                    </View>
+                </View>
+
+            </ScrollView>
         </SafeAreaView>
     );
 };
@@ -39,13 +55,13 @@ const styles = StyleSheet.create({
         height: 60,
         borderBottomWidth: 1,
         borderBottomColor: COLORS.border,
-        paddingHorizontal: 15, // Sol taraftan boşluk (Figma: X:15)
+        paddingHorizontal: 15,
     },
     backButtonContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         width: 175,
-        zIndex: 10, // Tıklanabilirliği garanti altına almak için
+        zIndex: 10,
     },
     headerTitle: {
         fontSize: 18,
@@ -64,6 +80,44 @@ const styles = StyleSheet.create({
         width: 39.87,
         height: 37,
         borderRadius: 10,
+    },
+
+    // --- YENİ EKLENEN STİLLER ---
+    contentContainer: {
+        flex: 1,
+    },
+    profileSection: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 15,
+        marginTop: 20, // Header'dan boşluk
+        marginBottom: 15,
+    },
+    avatar: {
+        width: 48,
+        height: 48,
+        borderRadius: 24, // Tam yuvarlak olması için genişliğin yarısı
+        backgroundColor: '#1E3A8A', // Figma'daki U16 koyu mavi arka planı
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    avatarText: {
+        color: '#FFFFFF',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    userInfo: {
+        marginLeft: 12, // Avatar ile yazı arasındaki boşluk
+    },
+    userName: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: COLORS.textMain,
+    },
+    userHandle: {
+        fontSize: 14,
+        color: COLORS.textSecondary,
+        marginTop: 2,
     },
 });
 
