@@ -322,6 +322,25 @@ const styles = StyleSheet.create({
         color: COLORS.textMain,
         marginTop: 2,
     },
+    // (ALT GEZİNME ÇUBUĞU)
+    bottomNav: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between', // İkonlar arasına Figma'daki 60px boşluğu otomatik yayar
+        width: '100%', // Tüm ekranı kaplasın
+        maxWidth: 400, // Figma'daki maksimum 400px genişliği aşmasın
+        height: 40,
+        alignSelf: 'center',
+        paddingHorizontal: 20,
+        backgroundColor: COLORS.background, // Arkaplanla aynı renk
+        paddingBottom: 5, // Cihazların alt çentikleri için ufak bir pay
+    },
+    navIconContainer: {
+        width: 30, // Figma: 30x30 ölçüsü
+        height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
 
 export default PostDetailScreen;
