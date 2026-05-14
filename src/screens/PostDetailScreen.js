@@ -121,6 +121,19 @@ const PostDetailScreen = () => {
                             </TouchableOpacity>
                         </View>
                     </View>
+                    {/* 7. Kısım: Yorum Kartı */}
+                    <View style={styles.commentCard}>
+                        {/* Sol Taraf: Yorum Yapanın Profil Fotoğrafı (Sen) */}
+                        <View style={styles.commentAvatar}>
+                            <Text style={styles.commentAvatarText}>B</Text>
+                        </View>
+
+                        {/* Sağ Taraf: İsim ve Yorum Metni */}
+                        <View style={styles.commentContent}>
+                            <Text style={styles.commentAuthor}>Batın Yılmaz</Text>
+                            <Text style={styles.commentText}>Bu çalışma gerçekten gurur verici 🇹🇷</Text>
+                        </View>
+                    </View>
 
             </View>
 
