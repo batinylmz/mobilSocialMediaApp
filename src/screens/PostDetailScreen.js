@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, Image, ScrollView,TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '../constants/theme';
 
@@ -104,6 +104,23 @@ const PostDetailScreen = () => {
                         <Icon name="bookmark-outline" size={20} color={COLORS.textMain} />
                     </TouchableOpacity>
                 </View>
+
+                    {/* 6. Kısım: Yorumlar Başlığı ve Girdi Alanı */}
+                    <View style={styles.commentsSection}>
+                        <Text style={styles.commentsHeader}>Yorumlar (3)</Text>
+
+                        <View style={styles.commentInputContainer}>
+                            <TextInput
+                                style={styles.commentInput}
+                                placeholder="Yorum ekle..."
+                                placeholderTextColor={COLORS.textSecondary}
+                            />
+                            {/* Gönder (Kağıt Uçak) Butonu */}
+                            <TouchableOpacity style={styles.sendButton}>
+                                <Icon name="send" size={16} color="#FFFFFF" />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
 
             </View>
 
