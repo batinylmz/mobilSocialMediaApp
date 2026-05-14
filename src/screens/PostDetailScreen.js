@@ -148,6 +148,9 @@ const PostDetailScreen = () => {
                 <TouchableOpacity style={styles.navIconContainer}>
                     <Icon name="add-circle" size={30} color="#000000" />
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.navIconContainer}>
+                    <Icon name="person" size={26} color="#000000" />
+                </TouchableOpacity>
                 </View>
 
 </SafeAreaView>
