@@ -199,12 +199,11 @@ const styles = StyleSheet.create({
     },
     tag: {
         backgroundColor: 'rgba(119, 171, 255, 0.7)', // #77ABFF %70 Opacity
-        paddingHorizontal: 15,
+        paddingHorizontal: 12,
         paddingVertical: 4,
         borderRadius: 10,
         marginRight: 8,
         marginBottom: 8,
-        height: 20,
         justifyContent: 'center',
         alignItems: 'center',
     },
