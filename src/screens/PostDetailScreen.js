@@ -6,7 +6,7 @@ import { COLORS } from '../constants/theme';
 const PostDetailScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
-            //üst bar kismi
+
             <View style={styles.header}>
                 <TouchableOpacity style={styles.backButtonContainer}>
                     <Icon name="chevron-back" size={24} color={COLORS.textMain} />
@@ -22,21 +22,32 @@ const PostDetailScreen = () => {
                 </View>
             </View>
 
-            // kaydirilabilir ekran için
             <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
 
 
                 <View style={styles.profileSection}>
-
                     <View style={styles.avatar}>
                         <Text style={styles.avatarText}>U16</Text>
                     </View>
-
-
                     <View style={styles.userInfo}>
                         <Text style={styles.userName}>Kullanıcı 16</Text>
                         <Text style={styles.userHandle}>@user162327</Text>
                     </View>
+                </View>
+
+                {/* 3. Kısım: Gönderi Başlığı ve İçerik Metni */}
+                <View style={styles.textSection}>
+                    <Text style={styles.postTitle}>
+                        F-35 Programından Çıkarılmadan Kendi Savaş Uçağını Üretmeye Türkiye'nin KAAN Programı Hızla İlerliyor 🇹🇷
+                    </Text>
+
+                    <Text style={styles.postParagraph}>
+                        Türkiye, 2028 ile 2030 yılları arasında hava kuvvetlerine 20 adet Block-10 KAAN 5. nesil savaş uçağı teslim edecek; bu, Ankara'nın yerli bir hayalet muharip uçak üretme yeteneğine sahip az sayıdaki ülkeden biri olma yolundaki hamlesini hızlandırıyor.
+                    </Text>
+
+                    <Text style={[styles.postParagraph, { marginTop: 10 }]}>
+                        KAAN programı, ABD'nin Rusya'dan S-400 hava savunma sistemlerini satın alması nedeniyle Türkiye'yi F-35 projesinden çıkarmasının ardından büyük bir ivme kazandı.
+                    </Text>
                 </View>
 
             </ScrollView>
@@ -81,8 +92,6 @@ const styles = StyleSheet.create({
         height: 37,
         borderRadius: 10,
     },
-
-    // --- YENİ EKLENEN STİLLER ---
     contentContainer: {
         flex: 1,
     },
@@ -90,14 +99,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 15,
-        marginTop: 20, // Header'dan boşluk
+        marginTop: 20,
         marginBottom: 15,
     },
     avatar: {
         width: 48,
         height: 48,
-        borderRadius: 24, // Tam yuvarlak olması için genişliğin yarısı
-        backgroundColor: '#1E3A8A', // Figma'daki U16 koyu mavi arka planı
+        borderRadius: 24,
+        backgroundColor: '#1E3A8A',
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -107,7 +116,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     userInfo: {
-        marginLeft: 12, // Avatar ile yazı arasındaki boşluk
+        marginLeft: 12,
     },
     userName: {
         fontSize: 16,
@@ -118,6 +127,24 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: COLORS.textSecondary,
         marginTop: 2,
+    },
+
+
+    textSection: {
+        paddingHorizontal: 15,
+        marginBottom: 15,
+    },
+    postTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: COLORS.textMain,
+        marginBottom: 10,
+        lineHeight: 22, // Okunabilirliği artırmak için
+    },
+    postParagraph: {
+        fontSize: 14,
+        color: COLORS.textMain,
+        lineHeight: 20, // Paragrafların Figma'daki gibi nizami durması için
     },
 });
 
