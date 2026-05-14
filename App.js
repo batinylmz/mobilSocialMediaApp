@@ -1,28 +1,21 @@
 import React from 'react';
-import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
-import CreatePostScreen from './src/screens/CreatePostScreen'; // Default import
+import { StatusBar } from 'react-native';
+import PostDetailScreen from './src/screens/PostDetailScreen'; // Yeni ekranı import ettik
+import { COLORS } from './src/constants/theme';
 
 const App = () => {
     return (
-        <SafeAreaView style={styles.container}>
-            {/* Üst barın (saat/pil) beyaz arka planda siyah ikonlarla görünmesi için */}
-            <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+        <>
+            {/* Durum çubuğunu tasarımına uygun hale getirelim */}
+            <StatusBar
+                backgroundColor={COLORS.background}
+                barStyle="dark-content"
+            />
 
-            <View style={styles.content}>
-                <CreatePostScreen />
-            </View>
-        </SafeAreaView>
+            {/* Şu an sadece PostDetailScreen'i görüntülüyoruz */}
+            <PostDetailScreen />
+        </>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#FFFFFF',
-    },
-    content: {
-        flex: 1,
-    },
-});
 
 export default App;
