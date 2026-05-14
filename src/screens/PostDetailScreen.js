@@ -261,31 +261,33 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingRight: 2,
     },
-    // --- YENİ EKLENEN STİLLER (YORUM KARTI) ---
+
+    //  GÜNCELLENEN STİLLER
     commentCard: {
         flexDirection: 'row',
         alignItems: 'center',
+        width: 382,
         height: 60,
-        backgroundColor: 'rgba(229, 228, 226, 0.3)', // #E5E4E2 %30 Opaklık
+        backgroundColor: 'rgba(229, 228, 226, 0.3)', // #E5E4E2 %30
         borderWidth: 1,
-        borderColor: 'rgba(0, 0, 0, 0.3)', // Stroke rengi Siyah %30 Opaklık
+        borderColor: 'rgba(0, 0, 0, 0.3)', // #000000 %30
         borderRadius: 5,
+        alignSelf: 'center', // 382px genişliği ekranın ortasına oturtmak için
         paddingHorizontal: 15,
-        marginHorizontal: 15, // Ekran kenarlarından boşluk
-        marginBottom: 30, // Sayfa sonuna doğru boşluk bırakalım
+        marginBottom: 30,
     },
     commentAvatar: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
-        backgroundColor: '#1E3A8A', // Mavi tonumuz
+        width: 30,
+        height: 30,
+        borderRadius: 15,
+        backgroundColor: '#1E3A8A',
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12,
+        marginRight: 10,
     },
     commentAvatarText: {
         color: '#FFFFFF',
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 'bold',
     },
     commentContent: {
@@ -293,8 +295,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     commentAuthor: {
-        fontSize: 14,
-        fontWeight: 'bold',
+        fontSize: 14, // Figma: 14
+        fontWeight: '600', // Figma: Semi Bold
         color: COLORS.textMain,
     },
     commentText: {
