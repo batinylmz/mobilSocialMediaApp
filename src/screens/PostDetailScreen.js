@@ -139,28 +139,32 @@ const styles = StyleSheet.create({
     timeText: { color: '#FFFFFF', fontSize: 10, marginRight: 12 },
     controlIcon: { marginLeft: 12 },
 
-    // --- YENİ EKLENEN STİLLER (ETİKETLER VE BUTONLAR) ---
+
     interactionSection: {
         paddingHorizontal: 15,
         marginTop: 15,
     },
     tagsContainer: {
         flexDirection: 'row',
-        flexWrap: 'wrap', // Etiketler sığmazsa alt satıra geçsin
+        flexWrap: 'wrap',
         marginBottom: 15,
     },
     tag: {
-        backgroundColor: '#93C5FD', // Figma'daki mavi tonuna yakın
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 15, // Yuvarlak hatlar
+        backgroundColor: 'rgba(119, 171, 255, 0.7)', // #77ABFF %70 Opacity
+        paddingHorizontal: 15,
+        paddingVertical: 4,
+        borderRadius: 10,
         marginRight: 8,
         marginBottom: 8,
+        height: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     tagText: {
-        color: '#1E3A8A', // Koyu mavi yazı
-        fontSize: 12,
-        fontWeight: '600',
+        color: '#032783', // Figma kesin yazı rengi
+        fontSize: 12, // Figma kesin font boyutu
+        fontWeight: 'normal', // Istok Web Regular
+        includeFontPadding: false, // Android ortalama için
     },
     actionButtonsContainer: {
         flexDirection: 'row',
@@ -170,12 +174,12 @@ const styles = StyleSheet.create({
     actionButton: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: COLORS.tagBackground,
+        backgroundColor: COLORS.tagBackground, // Açık gri
         paddingHorizontal: 12,
         paddingVertical: 6,
         borderRadius: 8,
         marginRight: 10,
-        height: 30,
+        height: 30, // Figma yüksekliği
     },
     actionButtonText: {
         fontSize: 12,
@@ -185,8 +189,8 @@ const styles = StyleSheet.create({
     },
     bookmarkButton: {
         backgroundColor: COLORS.tagBackground,
-        width: 36,
-        height: 30,
+        width: 36, // Figma ölçüsü
+        height: 30, // Figma ölçüsü
         borderRadius: 8,
         justifyContent: 'center',
         alignItems: 'center',
