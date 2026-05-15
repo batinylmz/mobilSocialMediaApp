@@ -25,7 +25,19 @@ const CreatePostScreen = () => {
     const [media, setMedia] = useState(null);
     const [loading, setLoading] = useState(false);
 
+// Figma'daki Etiketler
+    const tags = ['#history', '#american', '#crime', '#french', '#fiction', '#classic', '#adventure'];
 
+
+    // Galeri Seçimi
+    const selectMedia = () => {
+        ImagePicker.openPicker({
+            mediaType: 'any',
+            compressImageQuality: 0.8,
+        }).then(res => {
+            setMedia({ uri: res.path, type: res.mime });
+        }).catch(e => console.log(e));
+    };
 
     return (
         <SafeAreaView style={styles.container}>
