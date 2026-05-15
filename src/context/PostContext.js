@@ -30,4 +30,10 @@ export const PostProvider = ({ children }) => {
         setPosts([newPost, ...posts]);
     };
 
+    return (
+        <PostContext.Provider value={{ posts, addPost }}>
+            {children}
+        </PostContext.Provider>
+    );
+
 };
