@@ -38,4 +38,10 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.background,
         paddingBottom: 5,
     },
+    navIconContainer: {
+        width: 30,
+        height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
