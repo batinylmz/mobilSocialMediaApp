@@ -51,6 +51,16 @@ const CreatePostScreen = () => {
         try {
             let downloadURL = null;
 
+            // Eğer medya seçildiyse önce Storage'a yükle
+            if (media) {
+                const filename = `posts/${Date.now()}_${media.uri.substring(media.uri.lastIndexOf('/') + 1)}`;
+                const storageRef = storage().ref(filename);
+                await storageRef.putFile(media.uri);
+                downloadURL = await storageRef.getDownloadURL();
+            }
+
+
+
 
 
     return (
