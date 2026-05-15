@@ -60,7 +60,29 @@ const CreatePostScreen = () => {
             }
 
 
+// Verileri Firestore'a kaydet
+            await firestore().collection('Posts').add({
+                authorName: "Batın Yılmaz",
+                authorUsername: "@batinyilmaz",
+                postTitle: title,
+                postContent: content,
+                mediaUrl: downloadURL,
+                mediaType: media ? (media.type.includes('video') ? 'video' : 'image') : null,
+                createdAt: firestore.FieldValue.serverTimestamp(),
+                likes: 0,
+            });
 
+            setLoading(false);
+            Alert.alert("Başarılı!", "Gönderiniz başarıyla paylaşıldı.", [
+                { text: "Tamam", onPress: () => navigation.goBack() } // veya 'PostDetail'e yönlendir
+            ]);
+
+        } catch (error) {
+            setLoading(false);
+            console.log(error);
+            Alert.alert("Hata", "Paylaşım sırasında bir sorun oluştu.");
+        }
+    };
 
 
     return (
