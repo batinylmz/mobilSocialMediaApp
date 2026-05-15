@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView, Image } from 'react-native';
+import { View, Text, TextInput, StyleSheet,ScrollView, TouchableOpacity, SafeAreaView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'; // Çan ikonu için eklendi
 import { COLORS, SIZES } from '../constants/theme';
+import BottomNavBar from '../components/BottomNavBar';
 import GradientButton from '../components/GradientButton';
 
 const CreatePostScreen = () => {
@@ -9,6 +10,11 @@ const CreatePostScreen = () => {
 
     return (
         <SafeAreaView style={styles.container}>
+
+            <ScrollView
+                contentContainerStyle={styles.scrollContent}
+                showsVerticalScrollIndicator={false}
+            >
             {/* Özel Header Alanı */}
             <View style={styles.header}>
 
@@ -64,12 +70,19 @@ const CreatePostScreen = () => {
                     <GradientButton title="Paylaş" onPress={() => console.log('Tıklandı')} />
                 </View>
             </View>
+
+            </ScrollView>
+
+            <BottomNavBar />
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: COLORS.background },
+    scrollContent: {
+        paddingBottom: 20, // İçeriğin en altta navbar'a çok yapışmaması için
+    },
     header: {
         height: 60,
         width: '100%',
