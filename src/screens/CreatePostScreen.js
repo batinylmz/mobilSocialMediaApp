@@ -137,10 +137,31 @@ const CreatePostScreen = () => {
                     multiline
                     maxLength={500}
                     onChangeText={setContent}
+                    value={content}
                     placeholder="Neler düşünüyorsunuz?"
                     placeholderTextColor={COLORS.textSecondary}
                     textAlignVertical="top"
                 />
+                {/* YENİ EKLENEN: Medya Yükleme Alanı */}
+                <Text style={[styles.label, { marginTop: 20 }]}>Fotoğraf/Video Ekle</Text>
+                {!media ? (
+                    <TouchableOpacity style={styles.uploadBox} onPress={selectMedia}>
+                        <Icon name="cloud-upload" size={40} color="#9CA3AF" />
+                        <Text style={styles.uploadText}>"Galeriden seçmek için dokunun"</Text>
+                    </TouchableOpacity>
+                ) : (
+                    <View style={styles.previewContainer}>
+                        <Image source={{ uri: media.uri }} style={styles.previewImage} />
+                        <TouchableOpacity style={styles.removeBtn} onPress={() => setMedia(null)}>
+                            <Icon name="close-circle" size={28} color="#FF4444" />
+                        </TouchableOpacity>
+                        {media.type.includes('video') && (
+                            <View style={styles.videoBadge}>
+                                <Icon name="play" size={24} color="#FFF"/>
+                            </View>
+                        )}
+                    </View>
+                )}
 
                 {/* Paylaş Butonu */}
                 <View style={styles.buttonWrapper}>
