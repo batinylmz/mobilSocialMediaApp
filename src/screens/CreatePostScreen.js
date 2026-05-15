@@ -80,6 +80,9 @@ const CreatePostScreen = () => {
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: COLORS.background },
+    scrollContent: {
+        paddingBottom: 20, // İçeriğin en altta navbar'a çok yapışmaması için
+    },
     header: {
         height: 60,
         width: '100%',
