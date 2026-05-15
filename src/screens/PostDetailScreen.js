@@ -140,6 +140,8 @@ const PostDetailScreen = () => {
 
         </ScrollView>
 
+            {/* 8. Kısım: Alt Gezinme Çubuğu (Component) */}
+            <BottomNavBar />
 
 </SafeAreaView>
 );
