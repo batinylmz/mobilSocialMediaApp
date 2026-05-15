@@ -227,9 +227,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     notifyIconBg: {
-        width: SIZES.notificationSize, // 30
-        height: SIZES.notificationSize, // 30
-        backgroundColor: COLORS.tagBackground, // Gri arkaplan
+        width: SIZES.notificationSize || 30,
+        height: SIZES.notificationSize || 30,
+        backgroundColor: COLORS.tagBackground || '#E5E7EB',
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center'
