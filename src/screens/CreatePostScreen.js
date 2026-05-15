@@ -10,6 +10,11 @@ const CreatePostScreen = () => {
 
     return (
         <SafeAreaView style={styles.container}>
+
+            <ScrollView
+                contentContainerStyle={styles.scrollContent}
+                showsVerticalScrollIndicator={false}
+            >
             {/* Özel Header Alanı */}
             <View style={styles.header}>
 
@@ -65,6 +70,9 @@ const CreatePostScreen = () => {
                     <GradientButton title="Paylaş" onPress={() => console.log('Tıklandı')} />
                 </View>
             </View>
+
+            </ScrollView>
+
         </SafeAreaView>
     );
 };
