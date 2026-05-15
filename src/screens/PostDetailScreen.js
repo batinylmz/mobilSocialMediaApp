@@ -1,10 +1,14 @@
-import React from 'react';
+import React ,{ useContext } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, Image, ScrollView,TextInput } from 'react-native';
+import { PostContext } from '../context/PostContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '../constants/theme';
 import BottomNavBar from '../components/BottomNavBar';
 
 const PostDetailScreen = () => {
+    const { posts } = useContext(PostContext);
+    const post = posts[0]; // Şimdilik depodaki ilk veriyi alıyoruz
+
     return (
         <SafeAreaView style={styles.container}>
             {/* 1. Kısım: Üst Bar (Header) */}
@@ -31,21 +35,21 @@ const PostDetailScreen = () => {
                         <Text style={styles.avatarText}>U16</Text>
                     </View>
                     <View style={styles.userInfo}>
-                        <Text style={styles.userName}>Kullanıcı 16</Text>
-                        <Text style={styles.userHandle}>@user162327</Text>
+                        <Text style={styles.userName}>{post.authorName}</Text>
+                        <Text style={styles.userHandle}>{post.authorUsername}</Text>
                     </View>
                 </View>
 
                 {/* 3. Kısım: Gönderi Başlığı ve İçerik Metni */}
                 <View style={styles.textSection}>
+                    {/* Sadece Başlık (Kalın ve büyük font stili uygulanır) */}
                     <Text style={styles.postTitle}>
-                        F-35 Programından Çıkarılmadan Kendi Savaş Uçağını Üretmeye Türkiye'nin KAAN Programı Hızla İlerliyor 🇹🇷
+                        {post.postTitle}
                     </Text>
+
+                    {/* Sadece Paragraf İçeriği (Daha ince font stili uygulanır) */}
                     <Text style={styles.postParagraph}>
-                        Türkiye, 2028 ile 2030 yılları arasında hava kuvvetlerine 20 adet Block-10 KAAN 5. nesil savaş uçağı teslim edecek; bu, Ankara'nın yerli bir hayalet muharip uçak üretme yeteneğine sahip az sayıdaki ülkeden biri olma yolundaki hamlesini hızlandırıyor.
-                    </Text>
-                    <Text style={[styles.postParagraph, { marginTop: 10 }]}>
-                        KAAN programı, ABD'nin Rusya'dan S-400 hava savunma sistemlerini satın alması nedeniyle Türkiye'yi F-35 projesinden çıkarmasının ardından büyük bir ivme kazandı.
+                        {post.postContent}
                     </Text>
                 </View>
 
