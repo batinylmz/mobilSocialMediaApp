@@ -17,7 +17,15 @@ import BottomNavBar from '../components/BottomNavBar';
 import GradientButton from '../components/GradientButton';
 
 const CreatePostScreen = () => {
+    const navigation = useNavigation();
+
+    // Form State'leri
+    const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [media, setMedia] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+
 
     return (
         <SafeAreaView style={styles.container}>
