@@ -43,14 +43,14 @@ const PostDetailScreen = () => {
 
                 {/* 3. Kısım: Gönderi Başlığı ve İçerik Metni */}
                 <View style={styles.textSection}>
+                    {/* Sadece Başlık (Kalın ve büyük font stili uygulanır) */}
                     <Text style={styles.postTitle}>
-                        {post.postText}
+                        {post.postTitle}
                     </Text>
+
+                    {/* Sadece Paragraf İçeriği (Daha ince font stili uygulanır) */}
                     <Text style={styles.postParagraph}>
-                        Türkiye, 2028 ile 2030 yılları arasında hava kuvvetlerine 20 adet Block-10 KAAN 5. nesil savaş uçağı teslim edecek; bu, Ankara'nın yerli bir hayalet muharip uçak üretme yeteneğine sahip az sayıdaki ülkeden biri olma yolundaki hamlesini hızlandırıyor.
-                    </Text>
-                    <Text style={[styles.postParagraph, { marginTop: 10 }]}>
-                        KAAN programı, ABD'nin Rusya'dan S-400 hava savunma sistemlerini satın alması nedeniyle Türkiye'yi F-35 projesinden çıkarmasının ardından büyük bir ivme kazandı.
+                        {post.postContent}
                     </Text>
                 </View>
 
