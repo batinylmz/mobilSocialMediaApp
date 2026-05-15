@@ -1,7 +1,6 @@
-import { useContext } from 'react';
-import { PostContext } from '../context/PostContext';
-import React from 'react';
+import React ,{ useContext } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, Image, ScrollView,TextInput } from 'react-native';
+import { PostContext } from '../context/PostContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '../constants/theme';
 import BottomNavBar from '../components/BottomNavBar';
