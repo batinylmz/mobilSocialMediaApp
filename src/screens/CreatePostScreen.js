@@ -163,6 +163,17 @@ const CreatePostScreen = () => {
                     </View>
                 )}
 
+                {/* YENİ EKLENEN: Etiketler Alanı */}
+                <Text style={[styles.label, { marginTop: 20 }]}>Etiketler</Text>
+                <View style={styles.tagContainer}>
+                    {tags.map(tag => (
+                        <View key={tag} style={styles.tagWrap}>
+                            <Text style={styles.tagText}>{tag}</Text>
+                        </View>
+                    ))}
+                </View>
+
+
                 {/* Paylaş Butonu */}
                 <View style={styles.buttonWrapper}>
                     <GradientButton title="Paylaş" onPress={() => console.log('Tıklandı')} />
