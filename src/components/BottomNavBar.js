@@ -9,6 +9,9 @@ const BottomNavBar = () => {
             <TouchableOpacity style={styles.navIconContainer}>
                 <Icon name="home" size={26} color="#000000"/>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.navIconContainer}>
+                <Icon name="compass" size={26} color="#000000" />
+            </TouchableOpacity>
         </View>
     );
 };
