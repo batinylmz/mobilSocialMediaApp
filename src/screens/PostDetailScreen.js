@@ -283,13 +283,13 @@ const styles = StyleSheet.create({
     commentCard: {
         flexDirection: 'row',
         alignItems: 'center',
-        width: 382,
+
         height: 60,
         backgroundColor: 'rgba(229, 228, 226, 0.3)', // #E5E4E2 %30
         borderWidth: 1,
         borderColor: 'rgba(0, 0, 0, 0.3)', // #000000 %30
         borderRadius: 5,
-        alignSelf: 'center', // 382px genişliği ekranın ortasına oturtmak için
+        marginHorizontal: 15,
         paddingHorizontal: 15,
         marginBottom: 30,
     },
