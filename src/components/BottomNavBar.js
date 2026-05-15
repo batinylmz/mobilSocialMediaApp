@@ -18,6 +18,9 @@ const BottomNavBar = () => {
             <TouchableOpacity style={styles.navIconContainer}>
                 <Icon name="person" size={26} color="#000000" />
             </TouchableOpacity>
+            <TouchableOpacity style={styles.navIconContainer}>
+                <Icon name="settings" size={26} color="#000000" />
+            </TouchableOpacity>
         </View>
     );
 };
