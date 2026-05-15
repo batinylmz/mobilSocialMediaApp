@@ -73,6 +73,7 @@ const CreatePostScreen = () => {
 
             </ScrollView>
 
+            <BottomNavBar />
         </SafeAreaView>
     );
 };
