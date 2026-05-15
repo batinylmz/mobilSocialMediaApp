@@ -39,6 +39,20 @@ const CreatePostScreen = () => {
         }).catch(e => console.log(e));
     };
 
+    // Firebase Paylaşım Mantığı
+    const handlePublish = async () => {
+        if (!title || !content) {
+            Alert.alert("Eksik Bilgi", "Lütfen başlık ve içerik alanlarını doldurun.");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            let downloadURL = null;
+
+
+
     return (
         <SafeAreaView style={styles.container}>
 
