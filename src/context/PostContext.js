@@ -26,4 +26,8 @@ export const PostProvider = ({ children }) => {
         }
     ]);
 
+    const addPost = (newPost) => {
+        setPosts([newPost, ...posts]);
+    };
+
 };
