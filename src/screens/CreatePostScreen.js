@@ -3,7 +3,15 @@ import {
     View, Text, TextInput, StyleSheet, ScrollView,
     TouchableOpacity, SafeAreaView, Image, Alert, ActivityIndicator
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons'; // Çan ikonu için eklendi
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
+
+// Firebase ve Galeri Paketleri
+import ImagePicker from 'react-native-image-crop-picker';
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
+
+
 import { COLORS, SIZES } from '../constants/theme';
 import BottomNavBar from '../components/BottomNavBar';
 import GradientButton from '../components/GradientButton';
