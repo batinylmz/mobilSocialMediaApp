@@ -269,7 +269,23 @@ const styles = StyleSheet.create({
         borderWidth: 1, borderColor: COLORS.border, borderRadius: SIZES.inputRadius,
         padding: 15, color: COLORS.textMain
     },
-    buttonWrapper: { width: '100%', marginTop: 40 }
+
+    // --- YENİ EKLENEN STİLLER (Medya ve Etiketler İçin) ---
+    uploadBox: {
+        width: '100%', height: 160,
+        borderWidth: 2, borderColor: '#D1D5DB', borderStyle: 'dashed', borderRadius: 12,
+        backgroundColor: '#F8F9FA', justifyContent: 'center', alignItems: 'center'
+    },
+    uploadText: { marginTop: 10, color: '#6B7280', fontSize: 14 },
+    previewContainer: { width: '100%', height: 180, borderRadius: 12, overflow: 'hidden', position: 'relative' },
+    previewImage: { width: '100%', height: '100%', resizeMode: 'cover' },
+    removeBtn: { position: 'absolute', top: 10, right: 10, backgroundColor: 'rgba(255,255,255,0.8)', borderRadius: 20 },
+    videoBadge: { position: 'absolute', top: '40%', left: '45%', backgroundColor: 'rgba(0,0,0,0.6)', padding: 12, borderRadius: 30 },
+    tagContainer: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, width: '100%', marginBottom: 10 },
+    tagWrap: { backgroundColor: '#F3F4F6', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20 },
+    tagText: { color: '#4B5563', fontSize: 13, fontWeight: '500' },
+
+    buttonWrapper: { width: '100%', marginTop: 30, marginBottom: 20 }
 });
 
 export default CreatePostScreen;
