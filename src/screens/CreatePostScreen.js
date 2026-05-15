@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'; // Çan ikonu için eklendi
 import { COLORS, SIZES } from '../constants/theme';
+import BottomNavBar from '../components/BottomNavBar';
 import GradientButton from '../components/GradientButton';
 
 const CreatePostScreen = () => {
