@@ -24,3 +24,18 @@ const BottomNavBar = () => {
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    bottomNav: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+        maxWidth: 400,
+        height: 40,
+        alignSelf: 'center',
+        paddingHorizontal: 20,
+        backgroundColor: COLORS.background,
+        paddingBottom: 5,
+    },
+});
