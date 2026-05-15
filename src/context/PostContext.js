@@ -12,8 +12,8 @@ export const PostProvider = ({ children }) => {
             authorName: 'Kullanıcı 16',
             authorUsername: '@user162327',
             authorAvatar: 'U16',
-            postText: 'F-35 Programından Çıkarılmadan Kendi Savaş Uçağını Üretmeye Türkiye’nin KAAN Programı Hızla İlerliyor 🇹🇷\n\nTürkiye, 2028 ile 2030 yılları arasında hava kuvvetlerine 20 adet Block-10 KAAN 5. nesil savaş uçağı teslim edecek; bu, Ankara’nın yerli bir hayalet muharip uçak üretme yeteneğine sahip az sayıdaki ülkeden biri olma yolundaki hamlesini hızlandırıyor.',
-            tags: ['#history', '#türkiye', '#success', '#stealth fighter'],
+            postTitle: 'F-35 Programından Çıkarılmadan Kendi Savaş Uçağını Üretmeye Türkiye’nin KAAN Programı Hızla İlerliyor 🇹🇷',
+            postContent: 'Türkiye, 2028 ile 2030 yılları arasında hava kuvvetlerine 20 adet Block-10 KAAN 5. nesil savaş uçağı teslim edecek; bu, Ankara’nın yerli bir hayalet muharip uçak üretme yeteneğine sahip az sayıdaki ülkeden biri olma yolundaki hamlesini hızlandırıyor.\n\nKAAN programı, ABD\'nin Rusya\'dan S-400 hava savunma sistemlerini satın alması nedeniyle Türkiye\'yi F-35 projesinden çıkarmasının ardından büyük bir ivme kazandı.',            tags: ['#history', '#türkiye', '#success', '#stealth fighter'],
             likes: '1.3M',
             comments: [
                 {
