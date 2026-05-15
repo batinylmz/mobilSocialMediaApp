@@ -176,7 +176,11 @@ const CreatePostScreen = () => {
 
                 {/* Paylaş Butonu */}
                 <View style={styles.buttonWrapper}>
-                    <GradientButton title="Paylaş" onPress={() => console.log('Tıklandı')} />
+                    {loading ? (
+                        <ActivityIndicator size="large" color="#000" />
+                    ) : (
+                        <GradientButton title="Paylaş" onPress={handlePublish} />
+                    )}
                 </View>
             </View>
 
