@@ -8,7 +8,7 @@ import PostDetailScreen from './src/screens/PostDetailScreen'; // Yeni ekranı i
 
 const App = () => {
     return (
-        <>
+        <PostProvider>
             {/* Durum çubuğunu tasarımına uygun hale getirelim */}
             <StatusBar
                 backgroundColor={COLORS.background}
@@ -17,7 +17,7 @@ const App = () => {
 
             {/* Şu an sadece PostDetailScreen'i görüntülüyoruz */}
             <PostDetailScreen />
-        </>
+        </PostProvider>
     );
 };
 
