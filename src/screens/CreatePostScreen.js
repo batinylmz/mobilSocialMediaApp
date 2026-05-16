@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
     View, Text, TextInput, StyleSheet, ScrollView,
-    TouchableOpacity, SafeAreaView, Image, Alert, ActivityIndicator
+    TouchableOpacity, SafeAreaView, Image, Alert, ActivityIndicator,Platform
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
@@ -95,7 +95,12 @@ const CreatePostScreen = () => {
             {/* Özel Header Alanı */}
             <View style={styles.header}>
 
+                {/* Geri Dönme İkonu - Tıklanabilir ve Sola Sabit */}
+                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+                    <Icon name="chevron-back" size={24} color={COLORS.textMain} />
+                </TouchableOpacity>
                 {/* Sola dayalı başlık */}
+
                 <Text style={styles.headerTitle}>Gönderi Oluştur</Text>
 
                 {/* Ortalanmış Logo - 10px Border Radius eklendi */}
@@ -126,6 +131,8 @@ const CreatePostScreen = () => {
                     style={styles.inputTitle}
                     placeholder="Gönderinizin başlığı..."
                     placeholderTextColor={COLORS.textSecondary}
+                    value={title}          // <-- Bu eksik olabilir
+                    onChangeText={setTitle}
                 />
 
                 <View style={styles.labelRow}>
@@ -205,10 +212,16 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: COLORS.border
     },
+    backButton: {
+        position: 'absolute',
+        left: 10,
+        zIndex: 10,
+        padding: 5
+    },
     headerTitle: {
         position: 'absolute',
-        left: 20,
-        fontSize: 20,
+        left: 45, // İkonun üzerine binmesin diye sola 45px pay verdik
+        fontSize: 18,
         fontWeight: 'bold',
         color: COLORS.textMain
     },
@@ -289,3 +302,5 @@ const styles = StyleSheet.create({
 });
 
 export default CreatePostScreen;
+
+
