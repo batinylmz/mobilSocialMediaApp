@@ -59,16 +59,18 @@ const CreatePostScreen = () => {
                 const fileExtension = media.type.includes('video') ? 'mp4' : 'jpg';
                 const filename = `posts/${Date.now()}.${fileExtension}`;
 
-                // 1. KRİTİK ADIM: storage() içine Firebase'deki gs:// ile başlayan adresini tırnak içinde yaz.
-                // 2. ref().child() düzenine geçerek terminaldeki sarı WARN uyarılarını tamamen kapatıyoruz.
-                const storageRef = storage('gs://BURAYA_FİREBASE_STORAGE_ADRESİNİ_YAZ').ref().child(filename);
+                // Doğru Sözdizimi: storage().app.storage('gs://...') şeklinde olmalıdır
+                // NOT: gs:// ile başlayan adresi Firebase Console -> Storage alanından alıp buraya yapıştır.
+                const storageInstance = storage().app.storage('gs://BURAYA_FİREBASE_STORAGE_ADRESİNİ_YAZ');
+                const storageRef = storageInstance.ref().child(filename);
 
                 console.log("Yükleme başladı:", uploadUri);
 
-                // putFile yerine yeni standart olan putFile() uyarısını da çözüyoruz
+                // Dosyayı yüklüyoruz
                 await storageRef.putFile(uploadUri);
-                downloadURL = await storageRef.getDownloadURL();
 
+                // Yükleme bittikten sonra indirme linkini çekiyoruz
+                downloadURL = await storageRef.getDownloadURL();
                 console.log("Yükleme başarılı, URL:", downloadURL);
             }
 
