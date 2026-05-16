@@ -52,15 +52,30 @@ const CreatePostScreen = () => {
             let downloadURL = null;
 
             // Eğer medya seçildiyse önce Storage'a yükle
+            // if (media) bloğunu tamamen silip yerine bunu yapıştır:
             if (media) {
-                const filename = `posts/${Date.now()}_${media.uri.substring(media.uri.lastIndexOf('/') + 1)}`;
+                // 1. Android dosya yolunu temizle
+                const uploadUri = Platform.OS === 'android' ? media.uri.replace('file://', '') : media.uri;
+
+                // 2. Karmaşık yollarla uğraşmamak için tertemiz bir dosya adı oluştur (Uzantıyı dinamik alır)
+                const fileExtension = media.type.includes('video') ? 'mp4' : 'jpg';
+                const filename = `posts/${Date.now()}.${fileExtension}`;
+
+                // 3. Firebase'e kovanın yerini doğrudan göster (Hata riskini sıfırlar)
+                // NOT: Eğer yine hata alırsan storage() içine Firebase Console -> Storage kısmındaki 'gs://...' ile başlayan adresi yazabilirsin.
                 const storageRef = storage().ref(filename);
-                await storageRef.putFile(media.uri);
+
+                console.log("Yükleme başlıyor:", uploadUri, "-> Hedef:", filename);
+
+                // 4. Yüklemeyi yap ve kesin bitmesini bekle
+                await storageRef.putFile(uploadUri);
+
+                // 5. Yükleme bittiği için artık linki güvenle çekebiliriz
                 downloadURL = await storageRef.getDownloadURL();
+                console.log("Yükleme başarılı, URL alındı:", downloadURL);
             }
 
-
-// Verileri Firestore'a kaydet
+            // Verileri Firestore'a kaydet
             await firestore().collection('Posts').add({
                 authorName: "Batın Yılmaz",
                 authorUsername: "@batinyilmaz",
@@ -74,7 +89,7 @@ const CreatePostScreen = () => {
 
             setLoading(false);
             Alert.alert("Başarılı!", "Gönderiniz başarıyla paylaşıldı.", [
-                { text: "Tamam", onPress: () => navigation.goBack() } // veya 'PostDetail'e yönlendir
+                { text: "Tamam", onPress: () => navigation.goBack() }
             ]);
 
         } catch (error) {
