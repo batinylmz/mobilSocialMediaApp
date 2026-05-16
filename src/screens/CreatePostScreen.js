@@ -53,26 +53,23 @@ const CreatePostScreen = () => {
 
             // Eğer medya seçildiyse önce Storage'a yükle
             // if (media) bloğunu tamamen silip yerine bunu yapıştır:
+            // handlePublish içindeki "if (media)" bloğunu tamamen silip yerine bunu yapıştır:
             if (media) {
-                // 1. Android dosya yolunu temizle
                 const uploadUri = Platform.OS === 'android' ? media.uri.replace('file://', '') : media.uri;
-
-                // 2. Karmaşık yollarla uğraşmamak için tertemiz bir dosya adı oluştur (Uzantıyı dinamik alır)
                 const fileExtension = media.type.includes('video') ? 'mp4' : 'jpg';
                 const filename = `posts/${Date.now()}.${fileExtension}`;
 
-                // 3. Firebase'e kovanın yerini doğrudan göster (Hata riskini sıfırlar)
-                // NOT: Eğer yine hata alırsan storage() içine Firebase Console -> Storage kısmındaki 'gs://...' ile başlayan adresi yazabilirsin.
-                const storageRef = storage().ref(filename);
+                // 1. KRİTİK ADIM: storage() içine Firebase'deki gs:// ile başlayan adresini tırnak içinde yaz.
+                // 2. ref().child() düzenine geçerek terminaldeki sarı WARN uyarılarını tamamen kapatıyoruz.
+                const storageRef = storage('gs://BURAYA_FİREBASE_STORAGE_ADRESİNİ_YAZ').ref().child(filename);
 
-                console.log("Yükleme başlıyor:", uploadUri, "-> Hedef:", filename);
+                console.log("Yükleme başladı:", uploadUri);
 
-                // 4. Yüklemeyi yap ve kesin bitmesini bekle
+                // putFile yerine yeni standart olan putFile() uyarısını da çözüyoruz
                 await storageRef.putFile(uploadUri);
-
-                // 5. Yükleme bittiği için artık linki güvenle çekebiliriz
                 downloadURL = await storageRef.getDownloadURL();
-                console.log("Yükleme başarılı, URL alındı:", downloadURL);
+
+                console.log("Yükleme başarılı, URL:", downloadURL);
             }
 
             // Verileri Firestore'a kaydet
