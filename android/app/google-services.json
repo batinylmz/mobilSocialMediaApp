@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1034672253088",
+    "project_id": "mobilsocialmediaapp",
+    "storage_bucket": "mobilsocialmediaapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034672253088:android:e4d18011cef643e87c81c5",
+        "android_client_info": {
+          "package_name": "com.yenitemp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2ZkritVhzG4BmyfUV-xLuMhlwKqtvT-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

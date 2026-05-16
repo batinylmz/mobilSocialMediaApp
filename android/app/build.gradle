@@ -1,4 +1,6 @@
-apply plugin: "com.android.application"
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
@@ -72,13 +74,17 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
-    compileSdk rootProject.ext.compileSdkVersion
+
+    // Burayı 34 veya değişken yerine direkt 35 yapıyoruz
+    compileSdk 35
 
     namespace "com.yenitemp"
     defaultConfig {
         applicationId "com.yenitemp"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+       minSdkVersion 23
+        // Burayı da 35 yaparak Firebase'in istediği seviyeye çekiyoruz
+        targetSdkVersion 35
+
         versionCode 1
         versionName "1.0"
     }
@@ -108,7 +114,7 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
-
+  implementation platform('com.google.firebase:firebase-bom:33.1.0')
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
