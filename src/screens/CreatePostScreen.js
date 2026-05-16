@@ -59,17 +59,15 @@ const CreatePostScreen = () => {
                 const fileExtension = media.type.includes('video') ? 'mp4' : 'jpg';
                 const filename = `posts/${Date.now()}.${fileExtension}`;
 
-                // Doğru Sözdizimi: storage().app.storage('gs://...') şeklinde olmalıdır
-                // NOT: gs:// ile başlayan adresi Firebase Console -> Storage alanından alıp buraya yapıştır.
-                const storageInstance = storage().app.storage('gs://BURAYA_FİREBASE_STORAGE_ADRESİNİ_YAZ');
-                const storageRef = storageInstance.ref().child(filename);
+                // En sade ve stabil referans tanımı
+                const storageRef = storage().ref(filename);
 
                 console.log("Yükleme başladı:", uploadUri);
 
-                // Dosyayı yüklüyoruz
+                // Dosyayı yükle ve bitmesini bekle
                 await storageRef.putFile(uploadUri);
 
-                // Yükleme bittikten sonra indirme linkini çekiyoruz
+                // Linki çek
                 downloadURL = await storageRef.getDownloadURL();
                 console.log("Yükleme başarılı, URL:", downloadURL);
             }
