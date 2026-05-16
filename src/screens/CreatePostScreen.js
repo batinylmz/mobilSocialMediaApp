@@ -55,21 +55,8 @@ const CreatePostScreen = () => {
             // if (media) bloğunu tamamen silip yerine bunu yapıştır:
             // handlePublish içindeki "if (media)" bloğunu tamamen silip yerine bunu yapıştır:
             if (media) {
-                const uploadUri = Platform.OS === 'android' ? media.uri.replace('file://', '') : media.uri;
-                const fileExtension = media.type.includes('video') ? 'mp4' : 'jpg';
-                const filename = `posts/${Date.now()}.${fileExtension}`;
-
-                // En sade ve stabil referans tanımı
-                const storageRef = storage().ref(filename);
-
-                console.log("Yükleme başladı:", uploadUri);
-
-                // Dosyayı yükle ve bitmesini bekle
-                await storageRef.putFile(uploadUri);
-
-                // Linki çek
-                downloadURL = await storageRef.getDownloadURL();
-                console.log("Yükleme başarılı, URL:", downloadURL);
+                // Gerçek yüklemeyi pas geçip, Firestore'a doğrudan hazır bir test videosu linki veriyoruz
+                downloadURL = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
             }
 
             // Verileri Firestore'a kaydet
