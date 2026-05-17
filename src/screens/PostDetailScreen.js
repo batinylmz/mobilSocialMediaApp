@@ -173,9 +173,11 @@ const PostDetailScreen = ({navigation}) => {
 
                         <View style={styles.commentInputContainer}>
                             <TextInput
-                                style={styles.commentInput}
+                                style={styles.commentInput} // KENDİ STİL İSMİN NEYSE O KALSIN
                                 placeholder="Yorum ekle..."
-                                placeholderTextColor={COLORS.textSecondary}
+                                placeholderTextColor="#999"
+                                value={commentText}
+                                onChangeText={setCommentText}
                             />
                             {/* Gönder (Kağıt Uçak) Butonu */}
                             <TouchableOpacity style={styles.sendButton}>
