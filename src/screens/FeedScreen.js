@@ -62,7 +62,11 @@ const FeedScreen = ({navigation}) => {
 
     const renderPostItem = ({ item }) => {
         return (
-            <View style={styles.cardContainer}>
+            <TouchableOpacity
+                style={styles.cardContainer}
+                activeOpacity={0.95}
+                onPress={() => navigation.navigate('PostDetail', { post: item })}
+            >
                 <View style={styles.cardHeader}>
                     <View style={[styles.avatarPlaceholder, { backgroundColor: item.avatarBg }]}>
                         <Text style={styles.avatarText}>{item.avatarText}</Text>
@@ -123,7 +127,7 @@ const FeedScreen = ({navigation}) => {
                         <Icon name="bookmark-outline" size={24} color="#000" />
                     </TouchableOpacity>
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     };
 
