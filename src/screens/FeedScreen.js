@@ -391,7 +391,7 @@ const FeedScreen = ({ navigation }) => {
                 postTitle: "Wolsburg vs Bayern München",
                 postContent: "Gercekten çok çekişmeli bir maç oluyor",
                 mediaType: "video",
-                mediaUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", // Test mp4
+                mediaUrl: "https://www.w3schools.com/html/mov_bbb.mp4", // Test mp4
                 videoDuration: "0:34",
                 likes: 1789,
                 comments: 33,
