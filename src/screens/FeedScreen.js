@@ -10,5 +10,13 @@ const FeedScreen = () => {
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>ANA AKIŞ</Text>
 
+                <Image
+                    source={require('../../assets/nexus-logo.png')}
+                    style={styles.logo}
+                    resizeMode="contain"
+                />
+
+
+                <SafeAreaView>
     );
 };
