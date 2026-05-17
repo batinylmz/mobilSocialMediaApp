@@ -159,12 +159,30 @@ const FeedScreen = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
+            {/* ÜST BAR (HEADER) - YENİ DÜZEN */}
             <View style={styles.header}>
-                <Text style={styles.headerTitle}>ANA AKIŞ</Text>
-                <Image source={require('../../assets/nexus-logo.png')} style={styles.logo} resizeMode="contain" />
-                <TouchableOpacity style={styles.notificationButton} activeOpacity={0.7}>
-                    <Icon name="notifications" size={24} color="#000000" />
-                    <View style={styles.badge}><Text style={styles.badgeText}>3</Text></View>
+                {/* Sol Kısım: Başlık (Geri oku yok ama genişliği sağ tarafla eşit ki logo tam ortalansın) */}
+                <View style={styles.leftContainer}>
+                    <Text style={styles.headerTitle}>ANA AKIŞ</Text>
+                </View>
+
+                {/* Orta Kısım: Logo (Mutlak Pozisyonla Tam Ortada) */}
+                <View style={styles.logoContainer}>
+                    <Image
+                        source={require('../../assets/nexus-logo.png')}
+                        style={styles.logo}
+                        resizeMode="contain"
+                    />
+                </View>
+
+                {/* Sağ Kısım: Bildirim Butonu */}
+                <TouchableOpacity style={styles.rightContainer} activeOpacity={0.7}>
+                    <View style={styles.iconWrapper}>
+                        <Icon name="notifications" size={24} color="#000000" />
+                        <View style={styles.badge}>
+                            <Text style={styles.badgeText}>3</Text>
+                        </View>
+                    </View>
                 </TouchableOpacity>
             </View>
 
@@ -203,13 +221,69 @@ const FeedScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#FFFFFF' },
-    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 40, height: 60 },
-    headerTitle: { fontSize: 18, fontWeight: 'bold', color: COLORS.textMain, marginLeft: 5 },
-    logoContainer: { position: 'absolute', left: 0, right: 0, alignItems: 'center', zIndex: 1 },
-    logo: { width: 39.87, height: 37, borderRadius: 10 },
+    // --- YENİLENEN UNIFIED HEADER STİLLERİ ---
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        height: 60,
+        backgroundColor: '#FFFFFF',
+        borderBottomWidth: 1,
+        borderBottomColor: COLORS.border, // Gönderi oluştur ekranındaki o hafif stroke çizgisi
+        paddingHorizontal: 15
+    },
+    leftContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: 120, // Logonun sola kaymaması için sağ tarafla tam eşit genişlik
+        zIndex: 10
+    },
+    headerTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#000000',
+    },
+    logoContainer: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        alignItems: 'center',
+        zIndex: 1
+    },
+    logo: {
+        width: 39.87, // Milimetrik genişlik
+        height: 37,    // Milimetrik yükseklik
+        borderRadius: 10, // Figma'daki o şık yuvarlak köşeler
+        overflow: 'hidden' // Resmin köşelerden taşmasını engellemek için
+    },
+    rightContainer: {
+        width: 120, // Sol tarafla tam dengeli genişlik
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        zIndex: 10
+    },
+    iconWrapper: {
+        position: 'relative'
+    },
     notificationButton: { width: 100, alignItems: 'flex-end', justifyContent: 'center', position: 'relative' },
-    badge: { position: 'absolute', top: -4, right: -4, backgroundColor: '#FF3B30', width: 16, height: 16, borderRadius: 8, justifyContent: 'center', alignItems: 'center', zIndex: 1, borderWidth: 1.5, borderColor: '#FFFFFF' },
-    badgeText: { color: '#FFFFFF', fontSize: 10, fontWeight: 'bold' },
+    badge: {
+        position: 'absolute',
+        top: -4,
+        right: -4,
+        backgroundColor: '#FF3B30',
+        width: 16,
+        height: 16,
+        borderRadius: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1.5,
+        borderColor: '#FFFFFF'
+    },
+    badgeText: {
+        color: '#FFFFFF',
+        fontSize: 10,
+        fontWeight: 'bold'
+    },
     searchContainer: { flexDirection: 'row', alignItems: 'center', marginHorizontal: 20, marginTop: 15, marginBottom: 15, height: 36, borderRadius: 10, borderWidth: 1, borderColor: '#D9D9D9', paddingHorizontal: 12, backgroundColor: '#FFFFFF' },
     searchIcon: { marginRight: 8 },
     searchInput: { flex: 1, fontSize: 15, color: '#000000', paddingVertical: 0 },
