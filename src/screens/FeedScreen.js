@@ -191,6 +191,12 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(0, 0, 0, 0.5)', // Figma: Stroke 000000 %50
         overflow: 'hidden',
     },
+    cardHeader: {
+        flexDirection: 'row',
+        paddingHorizontal: 15,
+        paddingTop: 15,
+        alignItems: 'center',
+    },
 });
 
 export default FeedScreen;
