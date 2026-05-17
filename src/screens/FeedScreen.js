@@ -102,6 +102,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         backgroundColor: '#FFFFFF',
     },
+    searchIcon: {
+        marginRight: 8,
+    },
 });
 
 export default FeedScreen;
