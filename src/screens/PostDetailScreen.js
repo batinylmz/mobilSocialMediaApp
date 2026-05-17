@@ -12,17 +12,25 @@ const PostDetailScreen = ({navigation}) => {
     return (
         <SafeAreaView style={styles.container}>
             {/* 1. Kısım: Üst Bar (Header) */}
-            <View style={styles.header}>
-                <TouchableOpacity
-                    onPress={() => navigation.goBack()}
-                    style={styles.backButton}
-                    activeOpacity={0.7}
-                >
-                    <Icon name="chevron-back" size={24} color={COLORS.textMain} />
-                </TouchableOpacity>
 
-                <Text style={styles.headerTitle}>Gönderi Detayı</Text>
-                <View style={{ width: 24 }} />
+            <View style={styles.header}>
+                {/* Görsel düzenin ve yerlerin kaymaması için container düz VIEW olarak kalıyor */}
+                <View style={styles.backButtonContainer}>
+
+                    {/* Tıklama özelliğini (onPress) SADECE ok simgesinin etrafına sarıyoruz */}
+                    <TouchableOpacity
+                        onPress={() => navigation.goBack()}
+                        activeOpacity={0.7}
+                        style={{ paddingRight: 10 }} // Okun tıklama alanını rahatlatmak için hafif sağ boşluk
+                    >
+                        <Icon name="chevron-back" size={24} color={COLORS.textMain} />
+                    </TouchableOpacity>
+
+                    {/* Başlık artık butonun dışında, bağımsız ve basılamaz bir metin */}
+                    <Text style={styles.headerTitle}>Gönderi Detayı</Text>
+                </View>
+
+                {/* Logonuz eski yerinde ve zIndex düzeninde aynen kalıyor */}
                 <View style={styles.logoContainer}>
                     <Image
                         source={require('../../assets/nexus-logo.png')}
