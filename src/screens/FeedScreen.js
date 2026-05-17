@@ -233,6 +233,18 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 10,
     },
+    mediaContainer: {
+        marginHorizontal: 15,
+        height: 170, // Figma'daki video yüksekliği
+        borderRadius: 10,
+        overflow: 'hidden',
+        backgroundColor: '#000000',
+        position: 'relative',
+    },
+    mediaImage: {
+        width: '100%',
+        height: '100%',
+    },
 });
 
 export default FeedScreen;
