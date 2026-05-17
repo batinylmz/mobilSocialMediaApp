@@ -141,10 +141,17 @@ const PostDetailScreen = ({navigation}) => {
 
                     {/* Aksiyon Butonları (Beğen ve Kaydet) */}
                     <View style={styles.actionButtonsContainer}>
-                        {/* Beğen Butonu */}
-                        <TouchableOpacity style={styles.actionButton}>
-                            <Icon name="heart-outline" size={20} color={COLORS.textMain} />
-                            <Text style={styles.actionButtonText}>1.3M</Text>
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            onPress={() => setIsLiked(!isLiked)}
+                            style={{ flexDirection: 'row', alignItems: 'center' }} // Senin kendi stilin varsa buraya yaz
+                        >
+                            <Icon
+                                name={isLiked ? "heart" : "heart-outline"}
+                                size={24}
+                                color={isLiked ? "#FF3B30" : COLORS.textMain}
+                            />
+                            {/* Kendi kodundaki 1.3M yazan Text burada kalsın */}
                         </TouchableOpacity>
 
                     {/* Kaydet Butonu (Figma'daki 36x30 ölçüsü) */}
