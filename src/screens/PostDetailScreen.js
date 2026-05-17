@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     userInfo: { marginLeft: 12 },
     userName: { fontSize: 16, fontWeight: 'bold', color: COLORS.textMain },
     // USERNAME GRİLEŞTİRİLDİ
-    userHandle: { fontSize: 13, color: '#999999', marginTop: 2 },
+    userHandle: { fontSize: 13, color: '#666666', marginTop: 2 },
     textSection: { paddingHorizontal: 15, marginBottom: 15 },
     postTitle: { fontSize: 16, fontWeight: 'bold', color: COLORS.textMain, marginBottom: 10, lineHeight: 22 },
     postParagraph: { fontSize: 14, color: COLORS.textMain, lineHeight: 20 },
