@@ -53,12 +53,11 @@ const PostDetailScreen = ({ navigation, route }) => {
 
                 {/* 2. Kısım: Kullanıcı Profili */}
                 <View style={styles.profileSection}>
-                    <View style={styles.avatar}>
-                        <Text style={styles.avatarText}>U16</Text>
+                    <View style={[styles.avatar, { backgroundColor: post.avatarBg }]}>
+                        <Text style={styles.avatarText}>{post.avatarText}</Text>
                     </View>
                     <View style={styles.userInfo}>
-                        <Text style={styles.userName}>{post.authorName}</Text>
-                        <Text style={styles.userHandle}>{post.authorUsername}</Text>
+                        <Text style={styles.userName}>{post.handle}</Text>
                     </View>
                 </View>
 
