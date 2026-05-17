@@ -63,15 +63,8 @@ const PostDetailScreen = ({ navigation, route }) => {
 
                 {/* 3. Kısım: Gönderi Başlığı ve İçerik Metni */}
                 <View style={styles.textSection}>
-                    {/* Sadece Başlık (Kalın ve büyük font stili uygulanır) */}
-                    <Text style={styles.postTitle}>
-                        {post.postTitle}
-                    </Text>
-
-                    {/* Sadece Paragraf İçeriği (Daha ince font stili uygulanır) */}
-                    <Text style={styles.postParagraph}>
-                        {post.postContent}
-                    </Text>
+                    <Text style={styles.postTitle}>{post.title}</Text>
+                    <Text style={styles.postParagraph}>{post.body}</Text>
                 </View>
 
                 {/* 4. Kısım: Medya Oynatıcı (KAAN Uçağı) */}
