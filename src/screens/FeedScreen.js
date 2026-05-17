@@ -273,6 +273,20 @@ const styles = StyleSheet.create({
     listSeparator: {
         height: 15,
     },
+    cardContainer: {
+        marginHorizontal: 20,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: 'rgba(0, 0, 0, 0.5)',
+        overflow: 'hidden',
+    },
+    cardHeader: {
+        flexDirection: 'row',
+        paddingHorizontal: 15,
+        paddingTop: 15,
+        alignItems: 'center',
+    },
     avatarPlaceholder: {
         width: 30,
         height: 30,
