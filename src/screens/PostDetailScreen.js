@@ -74,22 +74,35 @@ const PostDetailScreen = ({navigation}) => {
                 {/* Medya Alanı */}
                 <View style={styles.mediaWrapper}>
                     {post.mediaType === 'video' ? (
-                        // Eğer video ise tıklanabilir yapıyoruz
+                        // Tıklama alanı ve state yönetimi aynen korunuyor!
                         <TouchableOpacity
                             activeOpacity={0.85}
                             onPress={() => setIsPaused(!isPaused)}
                             style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}
                         >
-                            <Video
-                                ref={videoRef}
-                                source={{ uri: post.mediaUrl }}
+                            {/* Emülatördeki siyah ekranı engellemek için geçici olarak Kaan resmini basıyoruz.
+              Böylece hem kodun kırılmıyor hem de görsel olarak placeholder hazır duruyor.
+            */}
+                            <Image
+                                source={require('../../assets/kaan.png')}
                                 style={styles.mediaImage}
-                                paused={isPaused}
                                 resizeMode="cover"
-                                repeat={true} // Video bittiğinde otomatik başa sarsın
                             />
 
-                            {/* Video duraklatıldığında ekranın ortasında belirecek şık buton */}
+                            {/* Kodu ve useRef yapısını bozmamak için Video bileşenini sadece aşağıya gizledik/yorum satırına aldık.
+              Gerçek cihaz testine geçildiğinde burayı açıp üstteki Image'ı silmen yetecek.
+
+              <Video
+                  ref={videoRef}
+                  source={{ uri: post.mediaUrl }}
+                  style={styles.mediaImage}
+                  paused={isPaused}
+                  resizeMode="cover"
+                  repeat={true}
+              />
+            */}
+
+                            {/* Video duraklatıldığında ekranın ortasında beliren şık buton mekanizman da aynen çalışıyor */}
                             {isPaused && (
                                 <View style={styles.videoOverlay}>
                                     <View style={styles.playIconCircle}>
@@ -99,7 +112,7 @@ const PostDetailScreen = ({navigation}) => {
                             )}
                         </TouchableOpacity>
                     ) : (
-                        // Eğer fotoğraf ise eski düzende normal resmi basıyoruz
+                        // Normal fotoğraf gönderileri için olan kısım
                         <Image
                             source={{ uri: post.mediaUrl }}
                             style={styles.mediaImage}
@@ -107,7 +120,6 @@ const PostDetailScreen = ({navigation}) => {
                         />
                     )}
                 </View>
-
                 {/* 5. Kısım: Etiketler ve Etkileşim Butonları */}
                 <View style={styles.interactionSection}>
 
