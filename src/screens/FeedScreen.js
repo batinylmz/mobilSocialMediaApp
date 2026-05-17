@@ -55,8 +55,18 @@ const FeedScreen = () => {
                 <Text style={styles.postBody}>
                     Türkiye, 2028 ile 2030 yılları arasında hava kuvvetlerine 20 adet Block-10 KAAN 5. nesil savaş uçağı teslim edecek; bu, Ankara'nın yerli bir hayalet muharip uçak üretme yeteneğine sahip az sayıdaki ülkeden biri olma yolundaki ...
                 </Text>
+            </View>
 
-           </View>
+            {/* Medya Alanı */}
+                <View style={styles.mediaContainer}>
+                    {/* Gerçek veriye bağlayana kadar statik placeholder */}
+                    <Image
+                        source={require('../../assets/kaan.png')}
+                        style={styles.mediaImage}
+                        resizeMode="cover"
+                    />
+             </View>
+
 
         </SafeAreaView>
 
