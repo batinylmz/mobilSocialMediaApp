@@ -183,6 +183,14 @@ const styles = StyleSheet.create({
         color: '#000000',
         paddingVertical: 0, // Android'de input dikeyde kaymasın diye
     },
+    cardContainer: {
+        marginHorizontal: 20,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: 'rgba(0, 0, 0, 0.5)', // Figma: Stroke 000000 %50
+        overflow: 'hidden',
+    },
 });
 
 export default FeedScreen;
