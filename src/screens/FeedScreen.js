@@ -1,5 +1,5 @@
 import React,{useState, useRef} from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity,TextInput,ScrollView } from 'react-native';
+import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity,TextInput,FlatList,RefreshControl } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 // import { COLORS } from '../constants/theme'; // Kendi renk dosyan varsa kullanabilirsin
 
@@ -145,7 +145,7 @@ const FeedScreen = () => {
                 </TouchableOpacity>
             </View>
 
-
+//arama cubugu olusturuldu sabit olacak sekılde
             <View style={styles.searchContainer}>
                 <Icon name="search-outline" size={20} color="#333333" style={styles.searchIcon} />
                 <TextInput
@@ -154,6 +154,25 @@ const FeedScreen = () => {
                     placeholderTextColor="#999999"
                 />
             </View>
+
+            {/* DİNAMİK AKIŞ LİSTESİ */}
+            <FlatList
+                ref={flatListRef} // En üste çıkma işlemini yapabilmek için ref bağladık
+                data={MOCK_POSTS}
+                renderItem={renderPostItem}
+                keyExtractor={item => item.id}
+                showsVerticalScrollIndicator={false}
+                ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
+                contentContainerStyle={styles.listContent}
+                // Aşağı çekip yenileme (Pull to Refresh) eklentisi
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isRefreshing}
+                        onRefresh={handleRefresh}
+                        tintColor="#032783" // Yükleniyor ikonunun rengi (Figma laciverti)
+                    />
+                }
+            />
 
         </SafeAreaView>
 
