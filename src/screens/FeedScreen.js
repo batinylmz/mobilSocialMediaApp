@@ -55,6 +55,10 @@ const FeedScreen = () => {
             setIsRefreshing(false);
         }, 1500);
     };
+    // Ev (Home) İkonuna Basıldığında En Üste Çıkma Fonksiyonu
+    const scrollToTop = () => {
+        flatListRef.current?.scrollToOffset({ animated: true, offset: 0 });
+    };
 
 
     return (
