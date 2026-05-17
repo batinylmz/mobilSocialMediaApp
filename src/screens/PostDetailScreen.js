@@ -153,7 +153,7 @@ const PostDetailScreen = ({ navigation, route }) => {
 
                     {/* 6. Kısım: Yorumlar Başlığı ve Girdi Alanı */}
                     <View style={styles.commentsSection}>
-                        <Text style={styles.commentsHeader}>Yorumlar (3)</Text>
+                        <Text style={styles.commentsHeader}>Yorumlar ({post.comments})</Text>
 
                         <View style={styles.commentInputContainer}>
                             <TextInput
