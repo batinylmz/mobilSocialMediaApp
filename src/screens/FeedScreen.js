@@ -7,17 +7,29 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {COLORS} from "../constants/theme";
 
 
-
-// BAĞIMSIZ KART BİLEŞENİ (Her postun kalbi ve kaydetmesi kendine özel çalışır)
 const PostCard = ({ item, navigation }) => {
+    // --- DURUMLAR ---
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(item.likes || 0);
     const [isSaved, setIsSaved] = useState(false);
+
+    // --- VİDEO DURUMLARI ---
+    const videoRef = useRef(null);
+    const [isPaused, setIsPaused] = useState(false);
+    const [isMuted, setIsMuted] = useState(true);
+    const [currentTime, setCurrentTime] = useState(0);
+    const [duration, setDuration] = useState(0);
 
     const formatLikes = (num) => {
         if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
         if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
         return num ? num.toString() : '0';
+    };
+
+    const formatTime = (timeInSeconds) => {
+        const mins = Math.floor(timeInSeconds / 60);
+        const secs = Math.floor(timeInSeconds % 60);
+        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
     };
 
     const avatarBgColor = item.avatarBg || '#0D47A1';
@@ -26,6 +38,8 @@ const PostCard = ({ item, navigation }) => {
 
     return (
         <View style={styles.cardContainer}>
+
+            {/* 1. ÜST KISIM VE YAZILAR (Tıklanınca Detaya Gider) */}
             <TouchableOpacity
                 activeOpacity={0.9}
                 delayPressIn={100}
@@ -36,47 +50,96 @@ const PostCard = ({ item, navigation }) => {
                         <Text style={styles.avatarText}>{avatarLetter}</Text>
                     </View>
                     <View style={styles.headerTextContainer}>
-                        <Text style={styles.postTitle} numberOfLines={1}>{item.authorName || 'İsimsiz'}</Text>
+                        <Text style={styles.postTitle} numberOfLines={1}>{item.authorName || 'İsimsiz Kullanıcı'}</Text>
                         <Text style={styles.postHandle}>{item.authorUsername || '@kullanici'}</Text>
                     </View>
                 </View>
 
                 {item.postTitle ? <Text style={[styles.postTitle, {paddingHorizontal: 15}]}>{item.postTitle}</Text> : null}
                 {item.postContent ? <Text style={styles.postBody}>{item.postContent}</Text> : null}
+            </TouchableOpacity>
 
-                {item.mediaType === 'image' && item.mediaUrl ? (
-                    <View style={styles.mediaContainer}>
-                        <Image
-                            source={{ uri: item.mediaUrl }}
-                            style={styles.mediaImage}
-                            resizeMode="cover"
+            {/* 2. MEDYA ALANI (Dokunma çakışmasını önlemek için parent TouchableOpacity DIŞINDA!) */}
+            {item.mediaType === 'image' && item.mediaUrl ? (
+                <View style={styles.mediaContainer}>
+                    <Image source={{ uri: item.mediaUrl }} style={styles.mediaImage} resizeMode="cover" />
+                </View>
+            ) : item.mediaType === 'video' && item.mediaUrl ? (
+                <View style={styles.mediaContainer}>
+                    <Video
+                        ref={videoRef}
+                        source={{ uri: item.mediaUrl }}
+                        style={styles.mediaImage}
+                        resizeMode="cover"
+                        repeat={true}
+                        muted={isMuted}
+                        paused={isPaused}
+                        onLoad={(data) => setDuration(data.duration)}
+                        onProgress={(data) => setCurrentTime(data.currentTime)}
+                        onError={(e) => console.log("Video Hatası: ", e)} // Konsola hata düşerse yakalarız
+                        poster="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800" // Video yüklenene kadar gösterilecek resim (Siyah ekranı çözer)
+                        posterResizeMode="cover"
+                        /* --- ANDROID EMÜLATÖR DONMA ÇÖZÜMLERİ --- */
+                        useTextureView={false} // Android'in siyah ekranda takılmasını önler
+                        playInBackground={false}
+                        ignoreSilentSwitch={"ignore"}
+                        bufferConfig={{
+                            minBufferMs: 15000,
+                            maxBufferMs: 50000,
+                            bufferForPlaybackMs: 2500,
+                            bufferForPlaybackAfterRebufferMs: 5000
+                        }}
+
+                        onLoad={(data) => setDuration(data.duration)}
+                        onProgress={(data) => setCurrentTime(data.currentTime)}
+                        onError={(e) => console.log("Video Hatası: ", e)}
+                        poster="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800"
+                        posterResizeMode="cover"
+
+                    />
+
+
+
+                    {/* VİDEO KONTROLLERİ */}
+                    <View style={styles.videoControlsBottom}>
+                        <TouchableOpacity onPress={() => setIsPaused(!isPaused)} hitSlop={{top: 15, bottom: 15, left: 15, right: 15}}>
+                            <Icon name={isPaused ? "play" : "pause"} size={22} color="#FFFFFF" />
+                        </TouchableOpacity>
+
+                        <Text style={styles.videoTimeText}>{formatTime(currentTime)}</Text>
+
+                        {/* ARTIK ÖZGÜRCE KAYDIRILABİLECEK SLIDER */}
+                        <Slider
+                            style={{ flex: 1, marginHorizontal: 5, height: 40 }} // Tıklama alanını genişlettik
+                            minimumValue={0}
+                            maximumValue={duration}
+                            value={currentTime}
+                            minimumTrackTintColor="#FF3B30"
+                            maximumTrackTintColor="rgba(255, 255, 255, 0.4)"
+                            thumbTintColor="#FFFFFF"
+                            onSlidingComplete={(value) => {
+                                videoRef.current.seek(value);
+                                setIsPaused(false);
+                            }}
                         />
-                    </View>
-                ) : item.mediaType === 'video' && item.mediaUrl ? (
-                    <View style={styles.mediaContainer}>
-                        <Video
-                            source={{ uri: item.mediaUrl }}
-                            style={styles.mediaImage}
-                            resizeMode="cover"
-                            repeat={true}
-                            muted={true}
-                            paused={false}
-                        />
-                        <View style={styles.videoControlsBottom}>
-                            <Icon name="play" size={18} color="#FFFFFF" />
-                            <Text style={styles.videoTimeText}>{item.videoDuration || '0:00'}</Text>
-                            <View style={styles.progressBarContainer}>
-                                <View style={styles.progressBarFill} />
-                            </View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, paddingRight: 5 }}>
-                                <Icon name="volume-mute" size={18} color="#FFFFFF" />
-                                <Icon name="copy-outline" size={18} color="#FFFFFF" />
+
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, paddingRight: 5 }}>
+                            <TouchableOpacity onPress={() => setIsMuted(!isMuted)} hitSlop={{top: 15, bottom: 15, left: 15, right: 15}}>
+                                <Icon name={isMuted ? "volume-mute" : "volume-high"} size={20} color="#FFFFFF" />
+                            </TouchableOpacity>
+                            <TouchableOpacity hitSlop={{top: 15, bottom: 15, left: 15, right: 15}}>
                                 <Icon name="expand" size={18} color="#FFFFFF" />
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
-                ) : null}
+                </View>
+            ) : null}
 
+            {/* 3. ETİKETLER VE ALT BUTONLAR (Burası da kendi başına tıklanabilir) */}
+            <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() => navigation.navigate('PostDetail', { post: item })}
+            >
                 <View style={styles.tagsContainer}>
                     {tagList.map((tag, index) => (
                         <View key={index} style={styles.tagBadge}>
@@ -87,6 +150,7 @@ const PostCard = ({ item, navigation }) => {
             </TouchableOpacity>
 
             <View style={styles.interactionBar}>
+                {/* ... Etkileşim butonları (Beğen, Yorum vs) aynı kalacak ... */}
                 <View style={styles.interactionLeft}>
                     <TouchableOpacity style={styles.interactionItem} onPress={() => { setIsLiked(!isLiked); setLikeCount(isLiked ? likeCount - 1 : likeCount + 1); }}>
                         <Icon name={isLiked ? "heart" : "heart-outline"} size={22} color={isLiked ? "#FF3B30" : "#000"} />
@@ -104,6 +168,7 @@ const PostCard = ({ item, navigation }) => {
                     <Icon name={isSaved ? "bookmark" : "bookmark-outline"} size={22} color="#000" />
                 </TouchableOpacity>
             </View>
+
         </View>
     );
 };
