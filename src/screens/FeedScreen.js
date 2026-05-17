@@ -265,6 +265,24 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         marginRight: 15,
     },
+    tagsContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        paddingHorizontal: 15,
+        marginTop: 10,
+        gap: 8, // Etiketler arası boşluk
+    },
+    tagBadge: {
+        backgroundColor: 'rgba(119, 171, 255, 0.7)', // Figma: Fill 77ABFF %70
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        borderRadius: 10,
+    },
+    tagText: {
+        color: '#032783',
+        fontSize: 10,
+        fontWeight: '600',
+    },
 });
 
 export default FeedScreen;
