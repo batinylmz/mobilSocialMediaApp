@@ -89,6 +89,19 @@ const styles = StyleSheet.create({
         fontSize: 10,
         fontWeight: 'bold',
     },
+    searchContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginHorizontal: 20,
+        marginTop: 15,
+        marginBottom: 15,
+        height: 36,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#D9D9D9', // Tasarımdaki ince gri çizgi
+        paddingHorizontal: 12,
+        backgroundColor: '#FFFFFF',
+    },
 });
 
 export default FeedScreen;
