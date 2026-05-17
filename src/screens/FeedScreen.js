@@ -83,6 +83,27 @@ const FeedScreen = () => {
                 <View style={styles.tagBadge}><Text style={styles.tagText}>#stealth fighter</Text></View>
             </View>
 
+            {/* Etkileşim Barı */}
+            <View style={styles.interactionBar}>
+                <View style={styles.interactionLeft}>
+                    <TouchableOpacity style={styles.interactionItem}>
+                        <Icon name="heart-outline" size={24} color="#000" />
+                        <Text style={styles.interactionText}>1.3M</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.interactionItem}>
+                        <Icon name="chatbubble-outline" size={24} color="#000" />
+                        <Text style={styles.interactionText}>57</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.interactionItem}>
+                        <Icon name="eye-outline" size={24} color="#000" />
+                        <Text style={styles.interactionText}>8.2M</Text>
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity>
+                    <Icon name="bookmark-outline" size={24} color="#000" />
+                </TouchableOpacity>
+            </View>
+
 
         </SafeAreaView>
 
