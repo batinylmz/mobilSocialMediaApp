@@ -25,6 +25,18 @@ const FeedScreen = () => {
                     </View>
                 </TouchableOpacity>
             </View>
+            {/* 2. PARÇA: ARAMA KUTUSU (SEARCH BAR) */}
+            <View style={styles.searchContainer}>
+                <Icon name="search-outline" size={20} color="#333333" style={styles.searchIcon} />
+                <TextInput
+                    style={styles.searchInput}
+                    placeholder="Gönderi ara..."
+                    placeholderTextColor="#999999"
+                />
+            </View>
+
+
+
         </SafeAreaView>
 
     );
