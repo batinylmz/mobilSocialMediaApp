@@ -4,7 +4,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 // import { COLORS } from '../constants/theme'; // Kendi renk dosyan varsa kullanabilirsin
 
 const FeedScreen = () => {
+    return (
+        <SafeAreaView style={styles.container}>
 
+            <View style={styles.header}>
+                <Text style={styles.headerTitle}>ANA AKIŞ</Text>
 
-
+    );
 };
