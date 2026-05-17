@@ -15,7 +15,16 @@ const FeedScreen = () => {
                     style={styles.logo}
                     resizeMode="contain"
                 />
+                {/* Sağ: Bildirim Zili ve Rozet */}
+                <TouchableOpacity style={styles.notificationButton} activeOpacity={0.7}>
+                    <Icon name="notifications" size={24} color="#000000" />
 
+                    {/* Kırmızı Rozet (Badge) */}
+                    <View style={styles.badge}>
+                        <Text style={styles.badgeText}>3</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
 
                 <SafeAreaView>
     );
