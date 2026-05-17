@@ -11,10 +11,10 @@ const MOCK_POSTS = [
         handle: '@Batın Yılmaz',
         body: "Türkiye, 2028 ile 2030 yılları arasında hava kuvvetlerine 20 adet Block-10 KAAN 5. nesil savaş uçağı teslim edecek; bu, Ankara'nın yerli bir hayalet muharip uçak üretme yeteneğine sahip az sayıdaki ülkeden biri olma yolundaki ...",
         mediaType: 'video',
-        mediaSource: require('../../assets/kaan.png'), // <--- KENDİ RESMİNİ BURAYA YAZ
+        mediaSource: require('../../assets/kaan.png'),
         videoDuration: '0:45 / 1:30',
         tags: ['#history', '#türkiye', '#success', '#stealth fighter'],
-        likes: '1.3M',
+        likes: 1300000, // Sayısal yaptık ki dinamik artsın
         comments: '57',
         views: '8.2M'
     },
@@ -29,11 +29,101 @@ const MOCK_POSTS = [
         mediaSource: null,
         videoDuration: null,
         tags: ['#MaviVatan', '#Adalar', '#Türkiye'],
-        likes: '413K',
+        likes: 413000, // Sayısal yaptık ki dinamik artsın
         comments: '239',
         views: '7.4M'
     }
 ];
+
+// BAĞIMSIZ KART BİLEŞENİ (Her postun kalbi ve kaydetmesi kendine özel çalışır)
+const PostCard = ({ item, navigation }) => {
+    const [isLiked, setIsLiked] = useState(false);
+    const [likeCount, setLikeCount] = useState(item.likes);
+    const [isSaved, setIsSaved] = useState(false);
+
+    // Beğeni sayılarını şık formatlamak için yardımcı (Örn: 1300000 -> 1.3M)
+    const formatLikes = (num) => {
+        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+        if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
+        return num.toString();
+    };
+
+    return (
+        <View style={styles.cardContainer}>
+            <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() => navigation.navigate('PostDetail', { post: item })}
+            >
+                <View style={styles.cardHeader}>
+                    <View style={[styles.avatarPlaceholder, { backgroundColor: item.avatarBg }]}>
+                        <Text style={styles.avatarText}>{item.avatarText}</Text>
+                    </View>
+                    <View style={styles.headerTextContainer}>
+                        <Text style={styles.postTitle} numberOfLines={1}>{item.title}</Text>
+                        <Text style={styles.postHandle}>{item.handle}</Text>
+                    </View>
+                </View>
+
+                <Text style={styles.postBody}>{item.body}</Text>
+
+                {item.mediaType !== 'text' && (
+                    <View style={styles.mediaContainer}>
+                        <Image source={item.mediaSource} style={styles.mediaImage} resizeMode="cover" />
+                        {item.mediaType === 'video' && (
+                            <View style={styles.videoControls}>
+                                <Icon name="play" size={16} color="#FFF" />
+                                <Text style={styles.videoTime}>{item.videoDuration}</Text>
+                                <View style={{ flexDirection: 'row', gap: 10 }}>
+                                    <Icon name="volume-medium" size={16} color="#FFF" />
+                                    <Icon name="settings-outline" size={16} color="#FFF" />
+                                    <Icon name="expand" size={16} color="#FFF" />
+                                </View>
+                            </View>
+                        )}
+                    </View>
+                )}
+
+                <View style={styles.tagsContainer}>
+                    {item.tags.map((tag, index) => (
+                        <View key={index} style={styles.tagBadge}>
+                            <Text style={styles.tagText}>{tag}</Text>
+                        </View>
+                    ))}
+                </View>
+            </TouchableOpacity>
+
+            {/* BUTONLAR BURADA TETİKLENİR VE KARTLA ÇAKIŞMAZ */}
+            <View style={styles.interactionBar}>
+                <View style={styles.interactionLeft}>
+                    <TouchableOpacity
+                        style={styles.interactionItem}
+                        onPress={() => {
+                            setIsLiked(!isLiked);
+                            setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+                        }}
+                    >
+                        <Icon name={isLiked ? "heart" : "heart-outline"} size={24} color={isLiked ? "#FF3B30" : "#000"} />
+                        <Text style={styles.interactionText}>{formatLikes(likeCount)}</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.interactionItem}>
+                        <Icon name="chatbubble-outline" size={24} color="#000" />
+                        <Text style={styles.interactionText}>{item.comments}</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.interactionItem}>
+                        <Icon name="eye-outline" size={24} color="#000" />
+                        <Text style={styles.interactionText}>{item.views}</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity onPress={() => setIsSaved(!isSaved)}>
+                    <Icon name={isSaved ? "bookmark" : "bookmark-outline"} size={24} color={isSaved ? "#000000" : "#000"} />
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+};
 
 const FeedScreen = ({ navigation }) => {
     const [isRefreshing, setIsRefreshing] = useState(false);
@@ -41,153 +131,52 @@ const FeedScreen = ({ navigation }) => {
 
     const handleRefresh = () => {
         setIsRefreshing(true);
-        setTimeout(() => {
-            setIsRefreshing(false);
-        }, 1500);
+        setTimeout(() => setIsRefreshing(false), 1500);
     };
 
     const scrollToTop = () => {
         flatListRef.current?.scrollToOffset({ animated: true, offset: 0 });
     };
 
-    const renderPostItem = ({ item }) => {
-        return (
-            // Dış kapsayıcıyı tekrar View yaptık ki kilitlenme olmasın
-            <View style={styles.cardContainer}>
-
-                {/* SADECE İÇERİK KISMINI TIKLANABİLİR YAPTIK (Detaya Gider) */}
-                <TouchableOpacity
-                    activeOpacity={0.9}
-                    onPress={() => navigation.navigate('PostDetail', { post: item })}
-                >
-                    <View style={styles.cardHeader}>
-                        <View style={[styles.avatarPlaceholder, { backgroundColor: item.avatarBg }]}>
-                            <Text style={styles.avatarText}>{item.avatarText}</Text>
-                        </View>
-                        <View style={styles.headerTextContainer}>
-                            <Text style={styles.postTitle} numberOfLines={1}>{item.title}</Text>
-                            <Text style={styles.postHandle}>{item.handle}</Text>
-                        </View>
-                    </View>
-
-                    <Text style={styles.postBody}>{item.body}</Text>
-
-                    {item.mediaType !== 'text' && (
-                        <View style={styles.mediaContainer}>
-                            <Image
-                                source={item.mediaSource}
-                                style={styles.mediaImage}
-                                resizeMode="cover"
-                            />
-                            {item.mediaType === 'video' && (
-                                <View style={styles.videoControls}>
-                                    <Icon name="play" size={16} color="#FFF" />
-                                    <Text style={styles.videoTime}>{item.videoDuration}</Text>
-                                    <View style={{ flexDirection: 'row', gap: 10 }}>
-                                        <Icon name="volume-medium" size={16} color="#FFF" />
-                                        <Icon name="settings-outline" size={16} color="#FFF" />
-                                        <Icon name="expand" size={16} color="#FFF" />
-                                    </View>
-                                </View>
-                            )}
-                        </View>
-                    )}
-
-                    <View style={styles.tagsContainer}>
-                        {item.tags.map((tag, index) => (
-                            <View key={index} style={styles.tagBadge}>
-                                <Text style={styles.tagText}>{tag}</Text>
-                            </View>
-                        ))}
-                    </View>
-                </TouchableOpacity>
-
-                {/* ETKİLEŞİM BARI AYRI KALDI (Çakışma Önlendi) */}
-                <View style={styles.interactionBar}>
-                    <View style={styles.interactionLeft}>
-                        <TouchableOpacity style={styles.interactionItem}>
-                            <Icon name="heart-outline" size={24} color="#000" />
-                            <Text style={styles.interactionText}>{item.likes}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.interactionItem}>
-                            <Icon name="chatbubble-outline" size={24} color="#000" />
-                            <Text style={styles.interactionText}>{item.comments}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.interactionItem}>
-                            <Icon name="eye-outline" size={24} color="#000" />
-                            <Text style={styles.interactionText}>{item.views}</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <TouchableOpacity>
-                        <Icon name="bookmark-outline" size={24} color="#000" />
-                    </TouchableOpacity>
-                </View>
-
-            </View>
-        );
-    };
-
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>ANA AKIŞ</Text>
-                <Image
-                    source={require('../../assets/nexus-logo.png')}
-                    style={styles.logo}
-                    resizeMode="contain"
-                />
+                <Image source={require('../../assets/nexus-logo.png')} style={styles.logo} resizeMode="contain" />
                 <TouchableOpacity style={styles.notificationButton} activeOpacity={0.7}>
                     <Icon name="notifications" size={24} color="#000000" />
-                    <View style={styles.badge}>
-                        <Text style={styles.badgeText}>3</Text>
-                    </View>
+                    <View style={styles.badge}><Text style={styles.badgeText}>3</Text></View>
                 </TouchableOpacity>
             </View>
 
             <View style={styles.searchContainer}>
                 <Icon name="search-outline" size={20} color="#333333" style={styles.searchIcon} />
-                <TextInput
-                    style={styles.searchInput}
-                    placeholder="Gönderi ara..."
-                    placeholderTextColor="#999999"
-                />
+                <TextInput style={styles.searchInput} placeholder="Gönderi ara..." placeholderTextColor="#999999" />
             </View>
 
-            {/* FlatList'e flex: 1 ekleyip alanı doldurmasını sağladık */}
             <FlatList
                 style={{ flex: 1 }}
                 ref={flatListRef}
                 data={MOCK_POSTS}
-                renderItem={renderPostItem}
+                renderItem={({ item }) => <PostCard item={item} navigation={navigation} />}
                 keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false}
                 ItemSeparatorComponent={() => <View style={styles.listSeparator} />}
                 contentContainerStyle={styles.listContent}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={isRefreshing}
-                        onRefresh={handleRefresh}
-                        tintColor="#032783"
-                    />
-                }
+                refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} tintColor="#032783" />}
             />
 
             <View style={styles.bottomNav}>
-                <TouchableOpacity onPress={scrollToTop}>
-                    <Icon name="home" size={28} color="#032783" />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <Icon name="compass" size={28} color="#000" />
-                </TouchableOpacity>
+                <TouchableOpacity onPress={scrollToTop}><Icon name="home" size={28} color="#032783" /></TouchableOpacity>
+                <TouchableOpacity><Icon name="compass" size={28} color="#000" /></TouchableOpacity>
+
+                {/* ARTI BUTONU BAĞLANDI */}
                 <TouchableOpacity onPress={() => navigation.navigate('CreatePost')}>
                     <Icon name="add-circle" size={32} color="#000" />
                 </TouchableOpacity>
-                <TouchableOpacity>
-                    <Icon name="person" size={28} color="#000" />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <Icon name="settings" size={28} color="#000" />
-                </TouchableOpacity>
+
+                <TouchableOpacity><Icon name="person" size={28} color="#000" /></TouchableOpacity>
+                <TouchableOpacity><Icon name="settings" size={28} color="#000" /></TouchableOpacity>
             </View>
         </SafeAreaView>
     );
