@@ -43,6 +43,9 @@ const MOCK_POSTS = [
 const FeedScreen = () => {
     // 1. Aşağı Çekip Yenileme State'i
     const [isRefreshing, setIsRefreshing] = useState(false);
+
+    // 2. Listeyi en üste kaydırmak için Ref
+    const flatListRef = useRef(null);
     return (
         <SafeAreaView style={styles.container}>
 
