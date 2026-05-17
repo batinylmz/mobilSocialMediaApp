@@ -25,6 +25,7 @@ const FeedScreen = () => {
                     </View>
                 </TouchableOpacity>
             </View>
+            <ScrollView showsVerticalScrollIndicator={false}>
             {/* 2. PARÇA: ARAMA KUTUSU (SEARCH BAR) */}
             <View style={styles.searchContainer}>
                 <Icon name="search-outline" size={20} color="#333333" style={styles.searchIcon} />
@@ -105,6 +106,9 @@ const FeedScreen = () => {
             </View>
 
 
+    {/* Alt boşluk */}
+    <View style={{height: 30}} />
+        </ScrollView>
         </SafeAreaView>
 
     );
