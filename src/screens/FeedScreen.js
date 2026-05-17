@@ -34,8 +34,24 @@ const FeedScreen = () => {
                     placeholderTextColor="#999999"
                 />
             </View>
+            {/* 3. PARÇA: AKIŞ KARTI (POST CARD) */}
+            <View style={styles.cardContainer}>
 
 
+                <View style={styles.cardHeader}>
+                    <View style={styles.avatarPlaceholder}>
+                        <Text style={styles.avatarText}>B</Text>
+                    </View>
+                    <View style={styles.headerTextContainer}>
+                        {/* Figma: Inria Sans, Bold, 16px */}
+                        <Text style={styles.postTitle} numberOfLines={1}>
+                            F-35 Programından Çıkarılmadan Kendi Savaş...
+                        </Text>
+                        {/* Figma: Inter, Semi Bold, 10px */}
+                        <Text style={styles.postHandle}>@Batın Yılmaz</Text>
+                    </View>
+                </View>
+           </View>
 
         </SafeAreaView>
 
