@@ -12,6 +12,9 @@ const PostDetailScreen = ({navigation}) => {
     // --- VİDEO KONTROL STATE'LERİ ---
     const [isPaused, setIsPaused] = useState(false); // Videonun duraklatılma durumu
     const videoRef = useRef(null); // Videoyu yönetmek için referans
+    const [isLiked, setIsLiked] = useState(false);
+    const [isSaved, setIsSaved] = useState(false);
+    const [commentText, setCommentText] = useState(''); // Yazılan yorumu tutar
 
     return (
         <SafeAreaView style={styles.container}>
