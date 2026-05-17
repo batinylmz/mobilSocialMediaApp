@@ -75,6 +75,13 @@ const FeedScreen = () => {
                         </View>
                     </View>
              </View>
+            {/* Etiketler (Tags) */}
+            <View style={styles.tagsContainer}>
+                <View style={styles.tagBadge}><Text style={styles.tagText}>#history</Text></View>
+                <View style={styles.tagBadge}><Text style={styles.tagText}>#türkiye</Text></View>
+                <View style={styles.tagBadge}><Text style={styles.tagText}>#success</Text></View>
+                <View style={styles.tagBadge}><Text style={styles.tagText}>#stealth fighter</Text></View>
+            </View>
 
 
         </SafeAreaView>
