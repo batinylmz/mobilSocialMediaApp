@@ -105,6 +105,12 @@ const styles = StyleSheet.create({
     searchIcon: {
         marginRight: 8,
     },
+    searchInput: {
+        flex: 1,
+        fontSize: 15,
+        color: '#000000',
+        paddingVertical: 0, // Android'de input dikeyde kaymasın diye
+    },
 });
 
 export default FeedScreen;
