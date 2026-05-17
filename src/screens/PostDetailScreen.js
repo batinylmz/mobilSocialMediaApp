@@ -5,15 +5,17 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '../constants/theme';
 import BottomNavBar from '../components/BottomNavBar';
 
-const PostDetailScreen = ({navigation}) => {
-    const { posts } = useContext(PostContext);
-    const post = posts[0]; // Şimdilik depodaki ilk veriyi alıyoruz
+
+
+const PostDetailScreen = ({ navigation, route }) => {
+    const { post } = route.params; // Veriyi artık tıkladığımız karttan alıyoruz
+
 
     // --- VİDEO KONTROL STATE'LERİ ---
     const [isPaused, setIsPaused] = useState(false); // Videonun duraklatılma durumu
     const videoRef = useRef(null); // Videoyu yönetmek için referans
     const [isLiked, setIsLiked] = useState(false);
-    const [likeCount, setLikeCount] = useState(1345); // Gerçekten arttığını görmek için
+    const [likeCount, setLikeCount] = useState(post.likes); // Sayıyı gönderiden alır
     const [isSaved, setIsSaved] = useState(false);
     const [commentText, setCommentText] = useState('');
     return (
@@ -421,3 +423,4 @@ const styles = StyleSheet.create({
 });
 
 export default PostDetailScreen;
+
