@@ -245,6 +245,26 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
+    videoControls: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+        paddingBottom: 8,
+        paddingTop: 20,
+    },
+    videoTime: {
+        color: '#FFFFFF',
+        fontSize: 10,
+        fontWeight: 'bold',
+        flex: 1,
+        textAlign: 'right',
+        marginRight: 15,
+    },
 });
 
 export default FeedScreen;
