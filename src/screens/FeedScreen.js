@@ -283,6 +283,27 @@ const styles = StyleSheet.create({
         fontSize: 10,
         fontWeight: '600',
     },
+    interactionBar: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 15,
+        paddingVertical: 15,
+    },
+    interactionLeft: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 20, // Kalp, Yorum ve Göz ikonları arası boşluk
+    },
+    interactionItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    interactionText: {
+        fontSize: 20,
+        color: '#000000',
+        marginLeft: 6,
+    },
 });
 
 export default FeedScreen;
