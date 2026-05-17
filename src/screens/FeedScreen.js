@@ -12,7 +12,7 @@ const MOCK_POSTS = [
         handle: '@Batın Yılmaz',
         body: "Türkiye, 2028 ile 2030 yılları arasında hava kuvvetlerine 20 adet Block-10 KAAN 5. nesil savaş uçağı teslim edecek; bu, Ankara'nın yerli bir hayalet muharip uçak üretme yeteneğine sahip az sayıdaki ülkeden biri olma yolundaki ...",
         mediaType: 'video',
-        mediaSource: require('../../assets/post_image.png'),
+        mediaSource: require('../../assets/kaan.png'),
         videoDuration: '0:45 / 1:30',
         tags: ['#history', '#türkiye', '#success', '#stealth fighter'],
         likes: '1.3M',
@@ -40,7 +40,7 @@ const MOCK_POSTS = [
 
 
 
-const FeedScreen = () => {
+const FeedScreen = ({navigation}) => {
     // 1. Aşağı Çekip Yenileme State'i
     const [isRefreshing, setIsRefreshing] = useState(false);
 
