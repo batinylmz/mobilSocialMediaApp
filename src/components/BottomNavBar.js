@@ -9,7 +9,7 @@ const BottomNavBar = () => {
 
     return (
         <View style={styles.bottomNav}>
-            <TouchableOpacity style={styles.navIconContainer} onPress={() => navigation.navigate('PostDetail')}>
+            <TouchableOpacity style={styles.navIconContainer} onPress={() => navigation.navigate('Feed')}>
                 <Icon name="home" size={26} color="#000000"/>
             </TouchableOpacity>
 
