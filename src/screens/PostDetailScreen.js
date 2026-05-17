@@ -1,23 +1,43 @@
-import React ,{ useContext } from 'react';
+import React ,{ useContext,useState, useRef } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, Image, ScrollView,TextInput } from 'react-native';
 import { PostContext } from '../context/PostContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '../constants/theme';
 import BottomNavBar from '../components/BottomNavBar';
 
-const PostDetailScreen = () => {
+const PostDetailScreen = ({navigation}) => {
     const { posts } = useContext(PostContext);
     const post = posts[0]; // Şimdilik depodaki ilk veriyi alıyoruz
 
+    // --- VİDEO KONTROL STATE'LERİ ---
+    const [isPaused, setIsPaused] = useState(false); // Videonun duraklatılma durumu
+    const videoRef = useRef(null); // Videoyu yönetmek için referans
+    const [isLiked, setIsLiked] = useState(false);
+    const [likeCount, setLikeCount] = useState(1345); // Gerçekten arttığını görmek için
+    const [isSaved, setIsSaved] = useState(false);
+    const [commentText, setCommentText] = useState('');
     return (
         <SafeAreaView style={styles.container}>
             {/* 1. Kısım: Üst Bar (Header) */}
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.backButtonContainer}>
-                    <Icon name="chevron-back" size={24} color={COLORS.textMain} />
-                    <Text style={styles.headerTitle}>Gönderi Detayı</Text>
-                </TouchableOpacity>
 
+            <View style={styles.header}>
+                {/* Görsel düzenin ve yerlerin kaymaması için container düz VIEW olarak kalıyor */}
+                <View style={styles.backButtonContainer}>
+
+                    {/* Tıklama özelliğini (onPress) SADECE ok simgesinin etrafına sarıyoruz */}
+                    <TouchableOpacity
+                        onPress={() => navigation.goBack()}
+                        activeOpacity={0.7}
+                        style={{ paddingRight: 10 }} // Okun tıklama alanını rahatlatmak için hafif sağ boşluk
+                    >
+                        <Icon name="chevron-back" size={24} color={COLORS.textMain} />
+                    </TouchableOpacity>
+
+                    {/* Başlık artık butonun dışında, bağımsız ve basılamaz bir metin */}
+                    <Text style={styles.headerTitle}>Gönderi Detayı</Text>
+                </View>
+
+                {/* Logonuz eski yerinde ve zIndex düzeninde aynen kalıyor */}
                 <View style={styles.logoContainer}>
                     <Image
                         source={require('../../assets/nexus-logo.png')}
@@ -54,29 +74,52 @@ const PostDetailScreen = () => {
                 </View>
 
                 {/* 4. Kısım: Medya Oynatıcı (KAAN Uçağı) */}
+                {/* Medya Alanı */}
                 <View style={styles.mediaWrapper}>
-                    <Image
-                        source={require('../../assets/kaan.png')}
-                        style={styles.mediaImage}
-                        resizeMode="cover"
-                    />
-                    <View style={styles.videoControlsOverlay}>
-                        <View style={styles.progressBarBg}>
-                            <View style={styles.progressBarFill} />
-                        </View>
-                        <View style={styles.controlRow}>
-                            <Icon name="play" size={18} color="#FFFFFF" />
-                            <View style={styles.rightControls}>
-                                <Text style={styles.timeText}>0:45 / 1:30</Text>
-                                <Icon name="volume-medium" size={14} color="#FFFFFF" style={styles.controlIcon} />
-                                <Icon name="settings-outline" size={14} color="#FFFFFF" style={styles.controlIcon} />
-                                <Icon name="browsers-outline" size={14} color="#FFFFFF" style={styles.controlIcon} />
-                                <Icon name="expand-outline" size={14} color="#FFFFFF" style={styles.controlIcon} />
-                            </View>
-                        </View>
-                    </View>
-                </View>
+                    {post.mediaType === 'video' ? (
+                        // Tıklama alanı ve state mekanizması korunuyor
+                        <TouchableOpacity
+                            activeOpacity={0.85}
+                            onPress={() => setIsPaused(!isPaused)}
+                            style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}
+                        >
+                            {/* 1. KAAN Resmi - Placeholder */}
+                            <Image
+                                source={require('../../assets/kaan.png')}
+                                style={styles.mediaImage}
+                                resizeMode="contain" // ÇÖZÜM: Burayı 'contain' yaptık, letterboxing (siyah dikey/yatay boşluklar) geri geldi.
+                            />
 
+                            {/* Gelecekteki testler için gizli Video kiti */}
+                            {/* <Video ref={videoRef} ... /> */}
+
+                            {/* Oynat/Durdur yapınca ortada beliren buton mekanizması ve sahte kontroller */}
+                            {isPaused && (
+                                <View style={styles.videoOverlay}>
+                                    {/* Merkezi Oynat Butonu */}
+                                    <View style={styles.playIconCircle}>
+                                        <Icon name="play" size={30} color="#FFFFFF" style={{ marginLeft: 4 }} />
+                                    </View>
+
+                                    {/* Kullanıcının istediği 'video feel' için geçici placeholder kontrol barı (Uydurma ikonlar) */}
+                                    <View style={styles.videoControlsPlaceholder}>
+                                        <Icon name="pause" size={16} color="#FFFFFF" />
+                                        <View style={styles.progressBarPlaceholder} />
+                                        <Icon name="volume-medium" size={16} color="#FFFFFF" />
+                                        <Icon name="expand" size={16} color="#FFFFFF" />
+                                    </View>
+                                </View>
+                            )}
+                        </TouchableOpacity>
+                    ) : (
+                        // Normal fotoğraf gönderileri için korumalı alan
+                        <Image
+                            source={post.mediaUrl ? { uri: post.mediaUrl } : require('../../assets/kaan.png')}
+                            style={styles.mediaImage}
+                            resizeMode="cover" // Fotoğraflar tam ekran kalmaya devam ediyor
+                        />
+                    )}
+                </View>
                 {/* 5. Kısım: Etiketler ve Etkileşim Butonları */}
                 <View style={styles.interactionSection}>
 
@@ -97,18 +140,36 @@ const PostDetailScreen = () => {
                     </View>
 
                     {/* Aksiyon Butonları (Beğen ve Kaydet) */}
+                    {/* Aksiyon Butonları (Beğen ve Kaydet) */}
                     <View style={styles.actionButtonsContainer}>
                         {/* Beğen Butonu */}
-                        <TouchableOpacity style={styles.actionButton}>
-                            <Icon name="heart-outline" size={20} color={COLORS.textMain} />
-                            <Text style={styles.actionButtonText}>1.3M</Text>
+                        <TouchableOpacity
+                            style={styles.actionButton}
+                            onPress={() => {
+                                setIsLiked(!isLiked);
+                                setLikeCount(isLiked ? likeCount - 1 : likeCount + 1); // Tıklayınca artar, çekince azalır
+                            }}
+                        >
+                            <Icon
+                                name={isLiked ? "heart" : "heart-outline"}
+                                size={20}
+                                color={isLiked ? "#FF3B30" : COLORS.textMain} // Tıklanınca kırmızı olur
+                            />
+                            <Text style={styles.actionButtonText}>{likeCount}</Text>
                         </TouchableOpacity>
 
-                    {/* Kaydet Butonu (Figma'daki 36x30 ölçüsü) */}
-                    <TouchableOpacity style={styles.bookmarkButton}>
-                        <Icon name="bookmark-outline" size={20} color={COLORS.textMain} />
-                    </TouchableOpacity>
-                </View>
+                        {/* Kaydet Butonu (Figma'daki 36x30 ölçüsü) */}
+                        <TouchableOpacity
+                            style={styles.bookmarkButton}
+                            onPress={() => setIsSaved(!isSaved)}
+                        >
+                            <Icon
+                                name={isSaved ? "bookmark" : "bookmark-outline"}
+                                size={20}
+                                color={isSaved ? "#000000" : COLORS.textMain} // Tıklanınca siyah (dolu) olur
+                            />
+                        </TouchableOpacity>
+                    </View>
 
                     {/* 6. Kısım: Yorumlar Başlığı ve Girdi Alanı */}
                     <View style={styles.commentsSection}>
@@ -119,9 +180,17 @@ const PostDetailScreen = () => {
                                 style={styles.commentInput}
                                 placeholder="Yorum ekle..."
                                 placeholderTextColor={COLORS.textSecondary}
+                                value={commentText}
+                                onChangeText={setCommentText} // Yazı yazıldığını algılar
                             />
                             {/* Gönder (Kağıt Uçak) Butonu */}
-                            <TouchableOpacity style={styles.sendButton}>
+                            <TouchableOpacity
+                                disabled={commentText.trim().length === 0} // Boşken tıklanmayı engeller
+                                style={[
+                                    styles.sendButton,
+                                    { opacity: commentText.trim().length > 0 ? 1 : 0.4 } // Yazı yoksa soluk (0.4), varsa canlı (1) olur. Kutu boyutu ve rengi aynı kalır.
+                                ]}
+                            >
                                 <Icon name="send" size={16} color="#FFFFFF" />
                             </TouchableOpacity>
                         </View>
@@ -328,6 +397,24 @@ const styles = StyleSheet.create({
     navIconContainer: {
         width: 30, // Figma: 30x30 ölçüsü
         height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    videoOverlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.3)', // Videoyu hafif karartır ki buton belli olsun
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    playIconCircle: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
         justifyContent: 'center',
         alignItems: 'center',
     },
