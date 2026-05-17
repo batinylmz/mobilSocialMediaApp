@@ -67,53 +67,44 @@ const PostDetailScreen = ({ navigation, route }) => {
                     <Text style={styles.postParagraph}>{post.body}</Text>
                 </View>
 
-                {/* 4. Kısım: Medya Oynatıcı (KAAN Uçağı) */}
-                {/* Medya Alanı */}
-                <View style={styles.mediaWrapper}>
-                    {post.mediaType === 'video' ? (
-                        // Tıklama alanı ve state mekanizması korunuyor
-                        <TouchableOpacity
-                            activeOpacity={0.85}
-                            onPress={() => setIsPaused(!isPaused)}
-                            style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}
-                        >
-                            {/* 1. KAAN Resmi - Placeholder */}
+                {/* 4. Kısım: Medya Oynatıcı (Sadece metin değilse görünür) */}
+                {post.mediaType !== 'text' && (
+                    <View style={styles.mediaWrapper}>
+                        {post.mediaType === 'video' ? (
+                            <TouchableOpacity
+                                activeOpacity={0.85}
+                                onPress={() => setIsPaused(!isPaused)}
+                                style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}
+                            >
+                                <Image
+                                    source={post.mediaSource}
+                                    style={styles.mediaImage}
+                                    resizeMode="contain"
+                                />
+                                {isPaused && (
+                                    <View style={styles.videoOverlay}>
+                                        <View style={styles.playIconCircle}>
+                                            <Icon name="play" size={30} color="#FFFFFF" style={{ marginLeft: 4 }} />
+                                        </View>
+                                        <View style={styles.videoControlsPlaceholder}>
+                                            <Icon name="pause" size={16} color="#FFFFFF" />
+                                            <View style={styles.progressBarPlaceholder} />
+                                            <Icon name="volume-medium" size={16} color="#FFFFFF" />
+                                            <Icon name="expand" size={16} color="#FFFFFF" />
+                                        </View>
+                                    </View>
+                                )}
+                            </TouchableOpacity>
+                        ) : (
                             <Image
-                                source={require('../../assets/kaan.png')}
+                                source={post.mediaSource}
                                 style={styles.mediaImage}
-                                resizeMode="contain" // ÇÖZÜM: Burayı 'contain' yaptık, letterboxing (siyah dikey/yatay boşluklar) geri geldi.
+                                resizeMode="cover"
                             />
+                        )}
+                    </View>
+                )}
 
-                            {/* Gelecekteki testler için gizli Video kiti */}
-                            {/* <Video ref={videoRef} ... /> */}
-
-                            {/* Oynat/Durdur yapınca ortada beliren buton mekanizması ve sahte kontroller */}
-                            {isPaused && (
-                                <View style={styles.videoOverlay}>
-                                    {/* Merkezi Oynat Butonu */}
-                                    <View style={styles.playIconCircle}>
-                                        <Icon name="play" size={30} color="#FFFFFF" style={{ marginLeft: 4 }} />
-                                    </View>
-
-                                    {/* Kullanıcının istediği 'video feel' için geçici placeholder kontrol barı (Uydurma ikonlar) */}
-                                    <View style={styles.videoControlsPlaceholder}>
-                                        <Icon name="pause" size={16} color="#FFFFFF" />
-                                        <View style={styles.progressBarPlaceholder} />
-                                        <Icon name="volume-medium" size={16} color="#FFFFFF" />
-                                        <Icon name="expand" size={16} color="#FFFFFF" />
-                                    </View>
-                                </View>
-                            )}
-                        </TouchableOpacity>
-                    ) : (
-                        // Normal fotoğraf gönderileri için korumalı alan
-                        <Image
-                            source={post.mediaUrl ? { uri: post.mediaUrl } : require('../../assets/kaan.png')}
-                            style={styles.mediaImage}
-                            resizeMode="cover" // Fotoğraflar tam ekran kalmaya devam ediyor
-                        />
-                    )}
-                </View>
                 {/* 5. Kısım: Etiketler ve Etkileşim Butonları */}
                 <View style={styles.interactionSection}>
 
