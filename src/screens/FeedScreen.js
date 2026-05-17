@@ -65,6 +65,15 @@ const FeedScreen = () => {
                         style={styles.mediaImage}
                         resizeMode="cover"
                     />
+                    <View style={styles.videoControls}>
+                        <Icon name="play" size={16} color="#FFF" />
+                        <Text style={styles.videoTime}>0:45 / 1:30</Text>
+                        <View style={{flexDirection: 'row', gap: 10}}>
+                            <Icon name="volume-medium" size={16} color="#FFF" />
+                            <Icon name="settings-outline" size={16} color="#FFF" />
+                            <Icon name="expand" size={16} color="#FFF" />
+                        </View>
+                    </View>
              </View>
 
 
