@@ -41,6 +41,8 @@ const MOCK_POSTS = [
 
 
 const FeedScreen = () => {
+    // 1. Aşağı Çekip Yenileme State'i
+    const [isRefreshing, setIsRefreshing] = useState(false);
     return (
         <SafeAreaView style={styles.container}>
 
