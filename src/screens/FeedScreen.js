@@ -46,6 +46,17 @@ const FeedScreen = () => {
 
     // 2. Listeyi en üste kaydırmak için Ref
     const flatListRef = useRef(null);
+
+    // Yenileme Animasyonu Fonksiyonu
+    const handleRefresh = () => {
+        setIsRefreshing(true);
+        // Gerçekte burada API'den yeni veriler çekilir. Şimdilik 1.5 saniye sonra dönmeyi durduruyoruz.
+        setTimeout(() => {
+            setIsRefreshing(false);
+        }, 1500);
+    };
+
+
     return (
         <SafeAreaView style={styles.container}>
 
