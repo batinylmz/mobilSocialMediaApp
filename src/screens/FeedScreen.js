@@ -174,6 +174,25 @@ const FeedScreen = () => {
                 }
             />
 
+            {/* ALT NAVİGASYON BARI (Figma'daki alt kısım) */}
+            <View style={styles.bottomNav}>
+                <TouchableOpacity onPress={scrollToTop}>
+                    <Icon name="home" size={28} color="#032783" /> {/* Tıklayınca listeyi başa sarar */}
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <Icon name="compass" size={28} color="#000" />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <Icon name="add-circle" size={32} color="#000" />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <Icon name="person" size={28} color="#000" />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <Icon name="settings" size={28} color="#000" />
+                </TouchableOpacity>
+            </View>
+
         </SafeAreaView>
 
     );
