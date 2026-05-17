@@ -71,27 +71,41 @@ const PostDetailScreen = ({navigation}) => {
                 </View>
 
                 {/* 4. Kısım: Medya Oynatıcı (KAAN Uçağı) */}
+                {/* Medya Alanı */}
                 <View style={styles.mediaWrapper}>
-                    <Image
-                        source={require('../../assets/kaan.png')}
-                        style={styles.mediaImage}
-                        resizeMode="cover"
-                    />
-                    <View style={styles.videoControlsOverlay}>
-                        <View style={styles.progressBarBg}>
-                            <View style={styles.progressBarFill} />
-                        </View>
-                        <View style={styles.controlRow}>
-                            <Icon name="play" size={18} color="#FFFFFF" />
-                            <View style={styles.rightControls}>
-                                <Text style={styles.timeText}>0:45 / 1:30</Text>
-                                <Icon name="volume-medium" size={14} color="#FFFFFF" style={styles.controlIcon} />
-                                <Icon name="settings-outline" size={14} color="#FFFFFF" style={styles.controlIcon} />
-                                <Icon name="browsers-outline" size={14} color="#FFFFFF" style={styles.controlIcon} />
-                                <Icon name="expand-outline" size={14} color="#FFFFFF" style={styles.controlIcon} />
-                            </View>
-                        </View>
-                    </View>
+                    {post.mediaType === 'video' ? (
+                        // Eğer video ise tıklanabilir yapıyoruz
+                        <TouchableOpacity
+                            activeOpacity={0.85}
+                            onPress={() => setIsPaused(!isPaused)}
+                            style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}
+                        >
+                            <Video
+                                ref={videoRef}
+                                source={{ uri: post.mediaUrl }}
+                                style={styles.mediaImage}
+                                paused={isPaused}
+                                resizeMode="cover"
+                                repeat={true} // Video bittiğinde otomatik başa sarsın
+                            />
+
+                            {/* Video duraklatıldığında ekranın ortasında belirecek şık buton */}
+                            {isPaused && (
+                                <View style={styles.videoOverlay}>
+                                    <View style={styles.playIconCircle}>
+                                        <Icon name="play" size={30} color="#FFFFFF" style={{ marginLeft: 4 }} />
+                                    </View>
+                                </View>
+                            )}
+                        </TouchableOpacity>
+                    ) : (
+                        // Eğer fotoğraf ise eski düzende normal resmi basıyoruz
+                        <Image
+                            source={{ uri: post.mediaUrl }}
+                            style={styles.mediaImage}
+                            resizeMode="cover"
+                        />
+                    )}
                 </View>
 
                 {/* 5. Kısım: Etiketler ve Etkileşim Butonları */}
