@@ -13,9 +13,9 @@ const PostDetailScreen = ({navigation}) => {
     const [isPaused, setIsPaused] = useState(false); // Videonun duraklatılma durumu
     const videoRef = useRef(null); // Videoyu yönetmek için referans
     const [isLiked, setIsLiked] = useState(false);
+    const [likeCount, setLikeCount] = useState(1345); // Gerçekten arttığını görmek için
     const [isSaved, setIsSaved] = useState(false);
-    const [commentText, setCommentText] = useState(''); // Yazılan yorumu tutar
-
+    const [commentText, setCommentText] = useState('');
     return (
         <SafeAreaView style={styles.container}>
             {/* 1. Kısım: Üst Bar (Header) */}
@@ -140,32 +140,36 @@ const PostDetailScreen = ({navigation}) => {
                     </View>
 
                     {/* Aksiyon Butonları (Beğen ve Kaydet) */}
+                    {/* Aksiyon Butonları (Beğen ve Kaydet) */}
                     <View style={styles.actionButtonsContainer}>
+                        {/* Beğen Butonu */}
                         <TouchableOpacity
-                            activeOpacity={0.7}
-                            onPress={() => setIsLiked(!isLiked)}
-                            style={{ flexDirection: 'row', alignItems: 'center' }} // Senin kendi stilin varsa buraya yaz
+                            style={styles.actionButton}
+                            onPress={() => {
+                                setIsLiked(!isLiked);
+                                setLikeCount(isLiked ? likeCount - 1 : likeCount + 1); // Tıklayınca artar, çekince azalır
+                            }}
                         >
                             <Icon
                                 name={isLiked ? "heart" : "heart-outline"}
-                                size={24}
-                                color={isLiked ? "#FF3B30" : COLORS.textMain}
+                                size={20}
+                                color={isLiked ? "#FF3B30" : COLORS.textMain} // Tıklanınca kırmızı olur
                             />
-                            {/* Kendi kodundaki 1.3M yazan Text burada kalsın */}
+                            <Text style={styles.actionButtonText}>{likeCount}</Text>
                         </TouchableOpacity>
 
-                        {/* KAYDET BUTONU */}
+                        {/* Kaydet Butonu (Figma'daki 36x30 ölçüsü) */}
                         <TouchableOpacity
-                            activeOpacity={0.7}
+                            style={styles.bookmarkButton}
                             onPress={() => setIsSaved(!isSaved)}
                         >
                             <Icon
                                 name={isSaved ? "bookmark" : "bookmark-outline"}
-                                size={24}
-                                color={isSaved ? "#000000" : COLORS.textMain}
+                                size={20}
+                                color={isSaved ? "#000000" : COLORS.textMain} // Tıklanınca siyah (dolu) olur
                             />
                         </TouchableOpacity>
-                </View>
+                    </View>
 
                     {/* 6. Kısım: Yorumlar Başlığı ve Girdi Alanı */}
                     <View style={styles.commentsSection}>
@@ -173,14 +177,20 @@ const PostDetailScreen = ({navigation}) => {
 
                         <View style={styles.commentInputContainer}>
                             <TextInput
-                                style={styles.commentInput} // KENDİ STİL İSMİN NEYSE O KALSIN
+                                style={styles.commentInput}
                                 placeholder="Yorum ekle..."
-                                placeholderTextColor="#999"
+                                placeholderTextColor={COLORS.textSecondary}
                                 value={commentText}
-                                onChangeText={setCommentText}
+                                onChangeText={setCommentText} // Yazı yazıldığını algılar
                             />
                             {/* Gönder (Kağıt Uçak) Butonu */}
-                            <TouchableOpacity style={styles.sendButton}>
+                            <TouchableOpacity
+                                disabled={commentText.trim().length === 0} // Boşken tıklanmayı engeller
+                                style={[
+                                    styles.sendButton,
+                                    { opacity: commentText.trim().length > 0 ? 1 : 0.4 } // Yazı yoksa soluk (0.4), varsa canlı (1) olur. Kutu boyutu ve rengi aynı kalır.
+                                ]}
+                            >
                                 <Icon name="send" size={16} color="#FFFFFF" />
                             </TouchableOpacity>
                         </View>
