@@ -74,49 +74,46 @@ const PostDetailScreen = ({navigation}) => {
                 {/* Medya Alanı */}
                 <View style={styles.mediaWrapper}>
                     {post.mediaType === 'video' ? (
-                        // Tıklama alanı ve state yönetimi aynen korunuyor!
+                        // Tıklama alanı ve state mekanizması korunuyor
                         <TouchableOpacity
                             activeOpacity={0.85}
                             onPress={() => setIsPaused(!isPaused)}
                             style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}
                         >
-                            {/* Emülatördeki siyah ekranı engellemek için geçici olarak Kaan resmini basıyoruz.
-              Böylece hem kodun kırılmıyor hem de görsel olarak placeholder hazır duruyor.
-            */}
+                            {/* 1. KAAN Resmi - Placeholder */}
                             <Image
                                 source={require('../../assets/kaan.png')}
                                 style={styles.mediaImage}
-                                resizeMode="cover"
+                                resizeMode="contain" // ÇÖZÜM: Burayı 'contain' yaptık, letterboxing (siyah dikey/yatay boşluklar) geri geldi.
                             />
 
-                            {/* Kodu ve useRef yapısını bozmamak için Video bileşenini sadece aşağıya gizledik/yorum satırına aldık.
-              Gerçek cihaz testine geçildiğinde burayı açıp üstteki Image'ı silmen yetecek.
+                            {/* Gelecekteki testler için gizli Video kiti */}
+                            {/* <Video ref={videoRef} ... /> */}
 
-              <Video
-                  ref={videoRef}
-                  source={{ uri: post.mediaUrl }}
-                  style={styles.mediaImage}
-                  paused={isPaused}
-                  resizeMode="cover"
-                  repeat={true}
-              />
-            */}
-
-                            {/* Video duraklatıldığında ekranın ortasında beliren şık buton mekanizman da aynen çalışıyor */}
+                            {/* Oynat/Durdur yapınca ortada beliren buton mekanizması ve sahte kontroller */}
                             {isPaused && (
                                 <View style={styles.videoOverlay}>
+                                    {/* Merkezi Oynat Butonu */}
                                     <View style={styles.playIconCircle}>
                                         <Icon name="play" size={30} color="#FFFFFF" style={{ marginLeft: 4 }} />
+                                    </View>
+
+                                    {/* Kullanıcının istediği 'video feel' için geçici placeholder kontrol barı (Uydurma ikonlar) */}
+                                    <View style={styles.videoControlsPlaceholder}>
+                                        <Icon name="pause" size={16} color="#FFFFFF" />
+                                        <View style={styles.progressBarPlaceholder} />
+                                        <Icon name="volume-medium" size={16} color="#FFFFFF" />
+                                        <Icon name="expand" size={16} color="#FFFFFF" />
                                     </View>
                                 </View>
                             )}
                         </TouchableOpacity>
                     ) : (
-                        // Normal fotoğraf gönderileri için olan kısım
+                        // Normal fotoğraf gönderileri için korumalı alan
                         <Image
-                            source={{ uri: post.mediaUrl }}
+                            source={post.mediaUrl ? { uri: post.mediaUrl } : require('../../assets/kaan.png')}
                             style={styles.mediaImage}
-                            resizeMode="cover"
+                            resizeMode="cover" // Fotoğraflar tam ekran kalmaya devam ediyor
                         />
                     )}
                 </View>
