@@ -109,20 +109,15 @@ const PostDetailScreen = ({ navigation, route }) => {
                 <View style={styles.interactionSection}>
 
                     {/* Etiketler (Tags) */}
-                    <View style={styles.tagsContainer}>
-                        <View style={styles.tag}>
-                            <Text style={styles.tagText}>#history</Text>
+                    {post.tags && post.tags.length > 0 && (
+                        <View style={styles.tagsContainer}>
+                            {post.tags.map((tag, index) => (
+                                <View key={index} style={styles.tag}>
+                                    <Text style={styles.tagText}>{tag}</Text>
+                                </View>
+                            ))}
                         </View>
-                        <View style={styles.tag}>
-                            <Text style={styles.tagText}>#türkiye</Text>
-                        </View>
-                        <View style={styles.tag}>
-                            <Text style={styles.tagText}>#success</Text>
-                        </View>
-                        <View style={styles.tag}>
-                            <Text style={styles.tagText}>#stealth fighter</Text>
-                        </View>
-                    </View>
+                    )}
 
                     {/* Aksiyon Butonları (Beğen ve Kaydet) */}
                     {/* Aksiyon Butonları (Beğen ve Kaydet) */}
