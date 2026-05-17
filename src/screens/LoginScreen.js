@@ -1,225 +1,170 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { 
-  StyleSheet, 
-  Text, 
   View, 
+  Text, 
   TextInput, 
   TouchableOpacity, 
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
+  StyleSheet, 
+  ActivityIndicator, 
+  Image,
   Alert
 } from 'react-native';
-import { COLORS } from '../constants/theme';
-// Eğer arkadaşın useAuth hook'unu oluşturduysa buradan çağırılacak
-// import { useAuth } from '../hooks/useAuth'; 
+import LinearGradient from 'react-native-linear-gradient'; 
+import Ionicons from 'react-native-vector-icons/Ionicons'; 
+import { AuthContext } from '../context/AuthContext'; 
 
-export default function LoginScreen({ navigation }) {
+const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [secureText, setSecureText] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
 
-  // Arkadaşının Context yapısı hazır olunca burayı aktifleştirebilirsiniz
-  // const { login } = useAuth(); 
+  const { login } = useContext(AuthContext);
 
   const handleLogin = async () => {
-    // 1. Validasyon Kontrolü
     if (!username.trim() || !password.trim()) {
-      setErrorMessage('Kullanıcı adı ve şifre alanları boş bırakılamaz.');
+      Alert.alert('Hata', 'Lütfen kullanıcı adı ve şifre alanlarını doldurun.');
       return;
     }
 
-    setErrorMessage('');
-    setIsLoading(true); // Buton devre dışı kalır ve loading indicator başlar
+    setIsLoading(true);
 
     try {
-      // 2. DummyJSON API İsteği
       const response = await fetch('https://dummyjson.com/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username: username.trim(),
-          password: password.trim(),
+          username: username,
+          password: password,
         }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // API Başarılı: Token ve Kullanıcı verisi geldi
-        console.log('Giriş Başarılı:', data);
-        
-        // TODO: Arkadaşının kurduğu AuthContext'e verileri kaydetme
-        // if (login) { login(data.token, data); }
-
-        Alert.alert('Başarılı', 'Giriş işlemi tamamlandı, ana sayfaya yönlendiriliyorsunuz.');
-        
-        // Ana Tab Navigator'a yönlendirme (Ödev isterlerine göre)
-        // navigation.replace('Main'); 
+        login(data.token, data); 
       } else {
-        // API'den dönen hata mesajını göster
-        setErrorMessage(data.message || 'Giriş başarısız. Lütfen bilgilerinizi kontrol edin.');
+        Alert.alert('Giriş Başarısız', data.message || 'Kullanıcı adı veya şifre hatalı.');
       }
     } catch (error) {
-      console.error(error);
-      setErrorMessage('Ağ hatası oluştu. Lütfen internet bağlantınızı kontrol edin.');
+      Alert.alert('Bağlantı Hatası', 'Sunucuya ulaşılamıyor.');
     } finally {
-      setIsLoading(false); // İşlem bitince yükleme ekranını kapat
+      setIsLoading(false);
     }
   };
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    <LinearGradient
+      colors={['#1E3A8A', '#3882F6']}
       style={styles.container}
     >
-      <ScrollView contentContainerStyle={styles.scrollContainer} bounces={false}>
+      <View style={styles.logoContainer}>
+        <Image 
+          source={require('../../assets/nexus-logo.png')} 
+          style={styles.logo} 
+        />
+        <Text style={styles.logoSubtitle}>Sosyal Medya Platformu</Text>
+      </View>
+
+      <View style={styles.formContainer}>
         
-        {/* Üst Alan: Logo ve Başlık */}
-        <View style={styles.headerContainer}>
-          <View style={styles.logoPlaceholder}>
-            <Text style={styles.logoText}>NEXUS</Text>
+        <View style={styles.inputWrapper}>
+          <Text style={styles.inputLabel}>Kullanıcı Adı</Text>
+          <View style={styles.inputBox}>
+            <Ionicons name="person" size={20} color="black" style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="emilys"
+              placeholderTextColor="#A9A9A9"
+              value={username}
+              onChangeText={setUsername}
+              autoCapitalize="none"
+              editable={!isLoading}
+            />
           </View>
-          <Text style={styles.titleText}>Sosyal Medya Platformu</Text>
         </View>
 
-        {/* Giriş Kartı */}
-        <View style={styles.cardContainer}>
-          
-          {/* Kullanıcı Adı Alanı */}
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Kullanıcı Adı</Text>
-            <View style={styles.inputWrapper}>
-              <View style={styles.iconPlaceholder}>
-                <Text style={styles.iconText}>👤</Text>
-              </View>
-              <TextInput
-                style={styles.input}
-                placeholder="emilys"
-                placeholderTextColor={COLORS.textSecondary}
-                value={username}
-                onChangeText={setUsername}
-                autoCapitalize="none"
-                editable={!isLoading} // Yüklenirken inputu kilitle
-              />
-            </View>
+        <View style={styles.inputWrapper}>
+          <Text style={styles.inputLabel}>Şifre</Text>
+          <View style={styles.inputBox}>
+            <Ionicons name="lock-closed" size={20} color="black" style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="**********"
+              placeholderTextColor="#A9A9A9"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+              editable={!isLoading}
+            />
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+              <Ionicons name={showPassword ? "eye" : "eye-off"} size={20} color="black" style={styles.iconRight} />
+            </TouchableOpacity>
           </View>
+        </View>
 
-          {/* Şifre Alanı */}
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Şifre</Text>
-            <View style={styles.inputWrapper}>
-              <View style={styles.iconPlaceholder}>
-                <Text style={styles.iconText}>🔒</Text>
-              </View>
-              <TextInput
-                style={styles.input}
-                placeholder="**********"
-                placeholderTextColor={COLORS.textSecondary}
-                secureTextEntry={secureText}
-                value={password}
-                onChangeText={setPassword}
-                autoCapitalize="none"
-                editable={!isLoading} // Yüklenirken inputu kilitle
-              />
-              <TouchableOpacity 
-                style={styles.eyeButton} 
-                onPress={() => setSecureText(!secureText)}
-                disabled={isLoading}
-              >
-                <Text style={styles.eyeIconText}>{secureText ? '👁️' : '🙈'}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {/* Hata Mesajı Alanı */}
-          {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
-
-          {/* Giriş Yap Butonu */}
-          <TouchableOpacity 
-            style={[
-              styles.button, 
-              { backgroundColor: COLORS.gradientBlue },
-              isLoading && styles.disabledButton // Yüklenirken butonu görsel olarak soluklaştır
-            ]} 
-            onPress={handleLogin}
-            disabled={isLoading} // İstek süresince buton devre dışı
+        <TouchableOpacity 
+          onPress={handleLogin} 
+          disabled={isLoading}
+          style={styles.buttonShadow}
+        >
+          <LinearGradient
+            colors={['#2A7AE2', '#312727', '#DB6565']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.button}
           >
             {isLoading ? (
-              <ActivityIndicator color="#FFFFFF" />
+              <ActivityIndicator color="#FFF" />
             ) : (
               <Text style={styles.buttonText}>Giriş Yap</Text>
             )}
-          </TouchableOpacity>
+          </LinearGradient>
+        </TouchableOpacity>
 
-        </View>
-
-      </ScrollView>
-    </KeyboardAvoidingView>
+      </View>
+    </LinearGradient>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1E3A8A',
-  },
-  scrollContainer: {
-    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 20,
   },
-  headerContainer: {
+  logoContainer: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 40,
   },
-  logoPlaceholder: {
+  logo: {
     width: 120,
     height: 111,
     borderRadius: 40,
-    borderWidth: 2,
-    borderColor: '#FFFFFF',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    marginBottom: 10,
   },
-  logoText: {
+  logoSubtitle: {
     color: '#FFFFFF',
-    fontWeight: 'bold',
     fontSize: 16,
   },
-  titleText: {
-    fontFamily: 'Jaldi-Regular',
-    fontSize: 24,
-    color: '#FFFFFF',
-    marginTop: 15,
-    fontWeight: '500',
-  },
-  cardContainer: {
-    width: 400,
-    height: 490,
+  formContainer: {
+    width: '90%',
     backgroundColor: '#FFFFFF',
     borderRadius: 30,
-    paddingHorizontal: 25,
-    paddingTop: 35,
+    padding: 30,
     alignItems: 'center',
   },
-  inputGroup: {
+  inputWrapper: {
     width: '100%',
     marginBottom: 20,
   },
   inputLabel: {
-    fontFamily: 'Inter-Regular',
-    fontSize: 20,
-    color: '#000000',
+    fontSize: 18,
+    color: '#000',
     marginBottom: 8,
-    alignSelf: 'flex-start',
+    marginLeft: 5,
   },
-  inputWrapper: {
+  inputBox: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
@@ -228,52 +173,35 @@ const styles = StyleSheet.create({
     borderColor: '#000000',
     borderRadius: 20,
     paddingHorizontal: 15,
-    backgroundColor: '#FFFFFF',
   },
-  iconPlaceholder: {
+  icon: {
     marginRight: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
-  iconText: {
-    fontSize: 18,
+  iconRight: {
+    marginLeft: 10,
   },
   input: {
     flex: 1,
-    height: '100%',
-    color: '#000000',
     fontSize: 16,
-    fontFamily: 'Inter-Regular',
+    color: '#000',
   },
-  eyeButton: {
-    padding: 5,
-  },
-  eyeIconText: {
-    fontSize: 18,
-  },
-  errorText: {
-    color: '#EF4444',
-    fontSize: 14,
-    marginBottom: 15,
-    textAlign: 'center',
-    fontFamily: 'Inter-Regular',
-    fontWeight: '600'
+  buttonShadow: {
+    width: '100%',
+    marginTop: 20,
+    borderRadius: 20,
   },
   button: {
-    width: 350,
+    width: '100%',
     height: 60,
-    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 15,
-  },
-  disabledButton: {
-    opacity: 0.6,
+    borderRadius: 20,
   },
   buttonText: {
     color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: 'bold',
-    fontFamily: 'Inter-Regular',
+    fontSize: 18,
+    fontWeight: '600',
   },
 });
+
+export default LoginScreen;
