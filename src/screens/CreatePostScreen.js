@@ -91,38 +91,32 @@ const CreatePostScreen = () => {
                 contentContainerStyle={styles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
-            {/* Özel Header Alanı */}
-            <View style={styles.header}>
-
-                {/* Geri Dönme İkonu - Tıklanabilir ve Sola Sabit */}
-                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                    <Icon name="chevron-back" size={24} color={COLORS.textMain} />
-                </TouchableOpacity>
-                {/* Sola dayalı başlık */}
-
-                <Text style={styles.headerTitle}>Gönderi Oluştur</Text>
-
-                {/* Ortalanmış Logo - 10px Border Radius eklendi */}
-                <Image
-                    source={require('../../assets/nexus-logo.png')}
-                    style={styles.logo}
-                    resizeMode="cover"
-                />
-
-                {/* Sağa dayalı Bildirim İkonu ve Kırmızı Rozet */}
-                <TouchableOpacity style={styles.notifyContainer}>
-                    <View style={styles.notifyIconBg}>
-                        {/* Gerçek Çan (Bell) İkonu */}
-                        <Icon name="notifications" size={18} color="#000" />
+                {/* ÜST BAR (HEADER) */}
+                <View style={styles.header}>
+                    {/* Sol Kısım: Geri Ok ve Başlık */}
+                    <View style={styles.leftContainer}>
+                        <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingRight: 5 }}>
+                            <Icon name="chevron-back" size={26} color="#000000" />
+                        </TouchableOpacity>
+                        <Text style={styles.headerTitle}>Gönderi Oluştur</Text>
                     </View>
-                    {/* İçinde 3 yazan 14x14 kırmızı rozet */}
-                    <View style={styles.badge}>
-                        <Text style={styles.badgeText}>3</Text>
+
+                    {/* LOGOYU BURADAN KALDIRDIK (Alt sayfalarda logo olmaz) */}
+                    <View style={styles.logoContainer}>
+                        <Image
+                            source={require('../../assets/nexus-logo.png')} // Logonuzun doğru dosya yolunu buraya yazın
+                            style={styles.logo}
+                            resizeMode="contain"
+                        />
                     </View>
-                </TouchableOpacity>
-
-            </View>
-
+                    {/* Sağ Kısım: Bildirim İkonu */}
+                    <TouchableOpacity style={styles.rightContainer} activeOpacity={0.7}>
+                        <View style={styles.iconWrapper}>
+                            <Icon name="notifications" size={24} color="#000000" />
+                            <View style={styles.badge}><Text style={styles.badgeText}>3</Text></View>
+                        </View>
+                    </TouchableOpacity>
+                </View>
             {/* Form Alanı */}
             <View style={styles.form}>
                 <Text style={styles.label}>Başlık *</Text>
@@ -203,13 +197,19 @@ const styles = StyleSheet.create({
         paddingBottom: 20, // İçeriğin en altta navbar'a çok yapışmaması için
     },
     header: {
-        height: 60,
-        width: '100%',
         flexDirection: 'row',
-        justifyContent: 'center',
         alignItems: 'center',
+        justifyContent: 'space-between',
+        height: 60,
+        backgroundColor: '#FFFFFF',
         borderBottomWidth: 1,
-        borderBottomColor: COLORS.border
+        borderBottomColor: '#E5E5E5',
+        paddingHorizontal: 15
+    },
+    leftContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1, // Yazının sığması için kalan tüm alanı alır
     },
     backButton: {
         position: 'absolute',
@@ -217,19 +217,33 @@ const styles = StyleSheet.create({
         zIndex: 10,
         padding: 5
     },
-    headerTitle: {
-        position: 'absolute',
-        left: 45, // İkonun üzerine binmesin diye sola 45px pay verdik
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: COLORS.textMain
+    logoContainer: {
+        position: 'absolute', // Logoyu ekranın tam merkezine sabitler
+        left: 0,
+        right: 0,
+        alignItems: 'center',
+        zIndex: 1
     },
     logo: {
-        width: 39.87, // Figma genişliği
-        height: 37,   // Figma yüksekliği
-        borderRadius: 10, // Köşeler yuvarlatıldı
-        overflow: 'hidden',
+        width: 39.87, // Milimetrik genişlik
+        height: 37,    // Milimetrik yükseklik
+        borderRadius: 10, // Figma'daki o şık yuvarlak köşeler
+        overflow: 'hidden' // Resmin köşelerden taşmasını engellemek için
     },
+    headerTitle: {
+        fontSize: 18, // Başlığı biraz daha belirgin yaptık
+        fontWeight: 'bold',
+        color: '#000000',
+        marginLeft: 5
+    },
+    rightContainer: {
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+    },
+    iconWrapper: {
+        position: 'relative'
+    },
+
     notifyContainer: {
         position: 'absolute',
         right: 20,
@@ -248,25 +262,19 @@ const styles = StyleSheet.create({
     },
     badge: {
         position: 'absolute',
-        right: 0,
-        top: 0,
-        width: 14,
-        height: 14,
-        borderRadius: 7,
-        backgroundColor: '#F20000',
+        top: -4,
+        right: -4,
+        backgroundColor: '#FF3B30',
+        width: 16,
+        height: 16,
+        borderRadius: 8,
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 1.5, // Beyaz çerçevenin kalınlığı
-        borderColor: COLORS.background, // Beyaz çerçeve
-        zIndex: 10, // Android'de ikonun üstünde kalmasını garantiler
-        elevation: 5, // Android gölge/katman sırası
+        borderWidth: 1.5,
+        borderColor: '#FFFFFF',
+        zIndex: 1
     },
-    badgeText: {
-        color: '#FFFFFF',
-        fontSize: 8,
-        fontWeight: 'bold',
-        includeFontPadding: false, // Android'de rakamın tam ortalanmasını sağlar
-    },
+    badgeText: { color: '#FFFFFF', fontSize: 10, fontWeight: 'bold' },
     form: { paddingHorizontal: 20, marginTop: 20, width: '100%', alignItems: 'center' },
     label: { fontSize: 16, fontWeight: '500', alignSelf: 'flex-start', marginBottom: 8, color: COLORS.textMain },
     labelRow: { flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginTop: 15 },
