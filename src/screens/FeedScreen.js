@@ -3,6 +3,43 @@ import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity,TextInput
 import Icon from 'react-native-vector-icons/Ionicons';
 // import { COLORS } from '../constants/theme'; // Kendi renk dosyan varsa kullanabilirsin
 
+const MOCK_POSTS = [
+    {
+        id: '1',
+        avatarText: 'B',
+        avatarBg: '#6A1B9A',
+        title: 'F-35 Programından Çıkarılmadan Kendi Savaş...',
+        handle: '@Batın Yılmaz',
+        body: "Türkiye, 2028 ile 2030 yılları arasında hava kuvvetlerine 20 adet Block-10 KAAN 5. nesil savaş uçağı teslim edecek; bu, Ankara'nın yerli bir hayalet muharip uçak üretme yeteneğine sahip az sayıdaki ülkeden biri olma yolundaki ...",
+        mediaType: 'video',
+        mediaSource: require('../../assets/post_image.png'),
+        videoDuration: '0:45 / 1:30',
+        tags: ['#history', '#türkiye', '#success', '#stealth fighter'],
+        likes: '1.3M',
+        comments: '57',
+        views: '8.2M'
+    },
+    {
+        id: '2',
+        avatarText: 'M',
+        avatarBg: '#0D47A1',
+        title: 'Türkiye Mavi Vatan\'da Egemenlik ilan edecek 🇹🇷',
+        handle: '@Mustafa Özdemir',
+        body: 'Türkiye, Kurban Bayramı sonrası Mavi Vatan kanununu meclise sunacak. Tüm Mavi Vatan sınırlarının belirlenmesi ve hukuki koruma ile devlet korumasına alınması ...',
+        mediaType: 'text',
+        mediaSource: null,
+        videoDuration: null,
+        tags: ['#MaviVatan', '#Adalar', '#Türkiye'],
+        likes: '413K',
+        comments: '239',
+        views: '7.4M'
+    }
+];
+
+
+
+
+
 const FeedScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
