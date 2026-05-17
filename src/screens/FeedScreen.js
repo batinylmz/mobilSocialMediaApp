@@ -7,6 +7,8 @@ const MOCK_POSTS = [
         id: '1',
         avatarText: 'B',
         avatarBg: '#6A1B9A',
+        authorName: 'Batın Yılmaz',       // <-- Yeni
+        authorUsername: '@batinyilmaz233',// <-- Yeni
         title: 'F-35 Programından Çıkarılmadan Kendi Savaş...',
         handle: '@Batın Yılmaz',
         body: "Türkiye, 2028 ile 2030 yılları arasında hava kuvvetlerine 20 adet Block-10 KAAN 5. nesil savaş uçağı teslim edecek; bu, Ankara'nın yerli bir hayalet muharip uçak üretme yeteneğine sahip az sayıdaki ülkeden biri olma yolundaki ...",
@@ -14,14 +16,21 @@ const MOCK_POSTS = [
         mediaSource: require('../../assets/kaan.png'),
         videoDuration: '0:45 / 1:30',
         tags: ['#history', '#türkiye', '#success', '#stealth fighter'],
-        likes: 1300000, // Sayısal yaptık ki dinamik artsın
+        likes: 1300000,
         comments: '57',
-        views: '8.2M'
+        views: '8.2M',
+        // Yorumlar Listesi (DİNAMİK)
+        commentsList: [
+            { id: 'c1', avatar: 'M', name: 'Mustafa Özdemir', text: 'Bu çalışma gerçekten gurur verici 🇹🇷' },
+            { id: 'c2', avatar: 'A', name: 'Ahmet Yılmaz', text: 'Havacılık tarihimiz için dönüm noktası.' }
+        ]
     },
     {
         id: '2',
         avatarText: 'M',
         avatarBg: '#0D47A1',
+        authorName: 'Mustafa Özdemir',        // <-- Yeni
+        authorUsername: '@mustafaozdemir99', // <-- Yeni
         title: 'Türkiye Mavi Vatan\'da Egemenlik ilan edecek 🇹🇷',
         handle: '@Mustafa Özdemir',
         body: 'Türkiye, Kurban Bayramı sonrası Mavi Vatan kanununu meclise sunacak. Tüm Mavi Vatan sınırlarının belirlenmesi ve hukuki koruma ile devlet korumasına alınması ...',
@@ -29,9 +38,13 @@ const MOCK_POSTS = [
         mediaSource: null,
         videoDuration: null,
         tags: ['#MaviVatan', '#Adalar', '#Türkiye'],
-        likes: 413000, // Sayısal yaptık ki dinamik artsın
+        likes: 413000,
         comments: '239',
-        views: '7.4M'
+        views: '7.4M',
+        // Yorumlar Listesi (DİNAMİK)
+        commentsList: [
+            { id: 'c3', avatar: 'B', name: 'Batın Yılmaz', text: 'Kesinlikle atılması gereken bir adımdı, destekliyoruz!' }
+        ]
     }
 ];
 
