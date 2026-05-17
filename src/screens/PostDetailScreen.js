@@ -9,6 +9,10 @@ const PostDetailScreen = ({navigation}) => {
     const { posts } = useContext(PostContext);
     const post = posts[0]; // Şimdilik depodaki ilk veriyi alıyoruz
 
+    // --- VİDEO KONTROL STATE'LERİ ---
+    const [isPaused, setIsPaused] = useState(false); // Videonun duraklatılma durumu
+    const videoRef = useRef(null); // Videoyu yönetmek için referans
+
     return (
         <SafeAreaView style={styles.container}>
             {/* 1. Kısım: Üst Bar (Header) */}
