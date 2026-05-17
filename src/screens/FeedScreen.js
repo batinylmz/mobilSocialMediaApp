@@ -197,6 +197,14 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         alignItems: 'center',
     },
+    avatarPlaceholder: {
+        width: 30,
+        height: 30,
+        borderRadius: 15,
+        backgroundColor: '#6A1B9A', // Mor B harfi tasarımı
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
 
 export default FeedScreen;
