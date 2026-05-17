@@ -270,6 +270,9 @@ const styles = StyleSheet.create({
     listContent: {
         paddingBottom: 20, // Alt menü ile aradaki boşluk
     },
+    listSeparator: {
+        height: 15,
+    },
     avatarPlaceholder: {
         width: 30,
         height: 30,
