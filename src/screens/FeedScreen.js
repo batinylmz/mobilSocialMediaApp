@@ -60,6 +60,72 @@ const FeedScreen = () => {
         flatListRef.current?.scrollToOffset({ animated: true, offset: 0 });
     };
 
+    const renderPostItem = ({ item }) => {
+        return (
+            <View style={styles.cardContainer}>
+                <View style={styles.cardHeader}>
+                    <View style={[styles.avatarPlaceholder, { backgroundColor: item.avatarBg }]}>
+                        <Text style={styles.avatarText}>{item.avatarText}</Text>
+                    </View>
+                    <View style={styles.headerTextContainer}>
+                        <Text style={styles.postTitle} numberOfLines={1}>{item.title}</Text>
+                        <Text style={styles.postHandle}>{item.handle}</Text>
+                    </View>
+                </View>
+
+                <Text style={styles.postBody}>{item.body}</Text>
+
+                {item.mediaType !== 'text' && (
+                    <View style={styles.mediaContainer}>
+                        <Image
+                            source={item.mediaSource}
+                            style={styles.mediaImage}
+                            resizeMode="cover"
+                        />
+                        {item.mediaType === 'video' && (
+                            <View style={styles.videoControls}>
+                                <Icon name="play" size={16} color="#FFF" />
+                                <Text style={styles.videoTime}>{item.videoDuration}</Text>
+                                <View style={{ flexDirection: 'row', gap: 10 }}>
+                                    <Icon name="volume-medium" size={16} color="#FFF" />
+                                    <Icon name="settings-outline" size={16} color="#FFF" />
+                                    <Icon name="expand" size={16} color="#FFF" />
+                                </View>
+                            </View>
+                        )}
+                    </View>
+                )}
+
+                <View style={styles.tagsContainer}>
+                    {item.tags.map((tag, index) => (
+                        <View key={index} style={styles.tagBadge}>
+                            <Text style={styles.tagText}>{tag}</Text>
+                        </View>
+                    ))}
+                </View>
+
+                <View style={styles.interactionBar}>
+                    <View style={styles.interactionLeft}>
+                        <TouchableOpacity style={styles.interactionItem}>
+                            <Icon name="heart-outline" size={24} color="#000" />
+                            <Text style={styles.interactionText}>{item.likes}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.interactionItem}>
+                            <Icon name="chatbubble-outline" size={24} color="#000" />
+                            <Text style={styles.interactionText}>{item.comments}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.interactionItem}>
+                            <Icon name="eye-outline" size={24} color="#000" />
+                            <Text style={styles.interactionText}>{item.views}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity>
+                        <Icon name="bookmark-outline" size={24} color="#000" />
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    };
 
     return (
         <SafeAreaView style={styles.container}>
