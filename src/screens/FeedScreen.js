@@ -291,13 +291,12 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         borderRadius: 15,
-        backgroundColor: '#6A1B9A', // Mor B harfi tasarımı
         justifyContent: 'center',
         alignItems: 'center',
     },
     avatarText: {
         color: '#FFFFFF',
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 'bold',
     },
     headerTextContainer: {
@@ -393,6 +392,16 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#000000',
         marginLeft: 6,
+    },
+    bottomNav: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        height: 60,
+        backgroundColor: '#FFFFFF',
+        borderTopWidth: 1,
+        borderColor: '#E5E5E5',
+        paddingBottom: 10, // iOS kavisli ekranlar için küçük bir güvenli boşluk
     },
 });
 
