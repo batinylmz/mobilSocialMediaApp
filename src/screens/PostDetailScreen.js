@@ -154,10 +154,17 @@ const PostDetailScreen = ({navigation}) => {
                             {/* Kendi kodundaki 1.3M yazan Text burada kalsın */}
                         </TouchableOpacity>
 
-                    {/* Kaydet Butonu (Figma'daki 36x30 ölçüsü) */}
-                    <TouchableOpacity style={styles.bookmarkButton}>
-                        <Icon name="bookmark-outline" size={20} color={COLORS.textMain} />
-                    </TouchableOpacity>
+                        {/* KAYDET BUTONU */}
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            onPress={() => setIsSaved(!isSaved)}
+                        >
+                            <Icon
+                                name={isSaved ? "bookmark" : "bookmark-outline"}
+                                size={24}
+                                color={isSaved ? "#000000" : COLORS.textMain}
+                            />
+                        </TouchableOpacity>
                 </View>
 
                     {/* 6. Kısım: Yorumlar Başlığı ve Girdi Alanı */}
