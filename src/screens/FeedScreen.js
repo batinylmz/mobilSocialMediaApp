@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity, TextInput, FlatList, RefreshControl } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {COLORS} from "../constants/theme";
 
 const MOCK_POSTS = [
     {
@@ -83,13 +84,18 @@ const PostCard = ({ item, navigation }) => {
                     <View style={styles.mediaContainer}>
                         <Image source={item.mediaSource} style={styles.mediaImage} resizeMode="cover" />
                         {item.mediaType === 'video' && (
-                            <View style={styles.videoControls}>
-                                <Icon name="play" size={16} color="#FFF" />
-                                <Text style={styles.videoTime}>{item.videoDuration}</Text>
-                                <View style={{ flexDirection: 'row', gap: 10 }}>
-                                    <Icon name="volume-medium" size={16} color="#FFF" />
-                                    <Icon name="settings-outline" size={16} color="#FFF" />
-                                    <Icon name="expand" size={16} color="#FFF" />
+                            <View style={styles.videoControlsBottom}>
+                                <Icon name="play" size={18} color="#FFFFFF" />
+                                <Text style={styles.videoTimeText}>{item.videoDuration}</Text>
+
+                                <View style={styles.progressBarContainer}>
+                                    <View style={styles.progressBarFill} />
+                                </View>
+
+                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, paddingRight: 5 }}>
+                                    <Icon name="volume-medium" size={18} color="#FFFFFF" />
+                                    <Icon name="copy-outline" size={18} color="#FFFFFF" />
+                                    <Icon name="expand" size={18} color="#FFFFFF" />
                                 </View>
                             </View>
                         )}
@@ -197,9 +203,10 @@ const FeedScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#FFFFFF' },
-    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, height: 50 },
-    headerTitle: { fontSize: 20, fontWeight: 'bold', color: '#000000', width: 100 },
-    logo: { width: 40, height: 40 },
+    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 40, height: 60 },
+    headerTitle: { fontSize: 18, fontWeight: 'bold', color: COLORS.textMain, marginLeft: 5 },
+    logoContainer: { position: 'absolute', left: 0, right: 0, alignItems: 'center', zIndex: 1 },
+    logo: { width: 39.87, height: 37, borderRadius: 10 },
     notificationButton: { width: 100, alignItems: 'flex-end', justifyContent: 'center', position: 'relative' },
     badge: { position: 'absolute', top: -4, right: -4, backgroundColor: '#FF3B30', width: 16, height: 16, borderRadius: 8, justifyContent: 'center', alignItems: 'center', zIndex: 1, borderWidth: 1.5, borderColor: '#FFFFFF' },
     badgeText: { color: '#FFFFFF', fontSize: 10, fontWeight: 'bold' },
@@ -218,9 +225,10 @@ const styles = StyleSheet.create({
     postBody: { fontSize: 14, lineHeight: 20, color: '#000000', paddingHorizontal: 15, paddingTop: 10, paddingBottom: 10 },
     mediaContainer: { marginHorizontal: 15, height: 170, borderRadius: 10, overflow: 'hidden', backgroundColor: '#000000', position: 'relative' },
     mediaImage: { width: '100%', height: '100%' },
-    videoControls: { position: 'absolute', bottom: 0, left: 0, right: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10, paddingBottom: 8, paddingTop: 20 },
-    videoTime: { color: '#FFFFFF', fontSize: 10, fontWeight: 'bold', flex: 1, textAlign: 'right', marginRight: 15 },
-    tagsContainer: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 15, marginTop: 10, gap: 8 },
+    videoControlsBottom: { position: 'absolute', bottom: 10, left: 10, right: 10, flexDirection: 'row', alignItems: 'center' },
+    videoTimeText: { color: '#FFFFFF', fontSize: 12, fontWeight: 'bold', marginLeft: 10 },
+    progressBarContainer: { flex: 1, height: 3, backgroundColor: 'rgba(255, 255, 255, 0.4)', marginHorizontal: 12, borderRadius: 2 },
+    progressBarFill: { width: '40%', height: '100%', backgroundColor: '#FFFFFF', borderRadius: 2 }, tagsContainer: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 15, marginTop: 10, gap: 8 },
     tagBadge: { backgroundColor: 'rgba(119, 171, 255, 0.7)', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10 },
     tagText: { color: '#032783', fontSize: 10, fontWeight: '600' },
     interactionBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 15, paddingVertical: 15 },
