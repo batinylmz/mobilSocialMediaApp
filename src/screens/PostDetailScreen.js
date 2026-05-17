@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '../constants/theme';
 import BottomNavBar from '../components/BottomNavBar';
 
-const PostDetailScreen = () => {
+const PostDetailScreen = ({navigation}) => {
     const { posts } = useContext(PostContext);
     const post = posts[0]; // Şimdilik depodaki ilk veriyi alıyoruz
 
@@ -13,11 +13,16 @@ const PostDetailScreen = () => {
         <SafeAreaView style={styles.container}>
             {/* 1. Kısım: Üst Bar (Header) */}
             <View style={styles.header}>
-                <TouchableOpacity style={styles.backButtonContainer}>
+                <TouchableOpacity
+                    onPress={() => navigation.goBack()}
+                    style={styles.backButton}
+                    activeOpacity={0.7}
+                >
                     <Icon name="chevron-back" size={24} color={COLORS.textMain} />
-                    <Text style={styles.headerTitle}>Gönderi Detayı</Text>
                 </TouchableOpacity>
 
+                <Text style={styles.headerTitle}>Gönderi Detayı</Text>
+                <View style={{ width: 24 }} />
                 <View style={styles.logoContainer}>
                     <Image
                         source={require('../../assets/nexus-logo.png')}
