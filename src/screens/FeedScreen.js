@@ -205,6 +205,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    avatarText: {
+        color: '#FFFFFF',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    headerTextContainer: {
+        marginLeft: 10,
+        flex: 1,
+    },
 });
 
 export default FeedScreen;
