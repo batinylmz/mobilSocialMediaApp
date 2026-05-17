@@ -214,6 +214,25 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         flex: 1,
     },
+    postTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#000000',
+    },
+    postHandle: {
+        fontSize: 10,
+        fontWeight: '600',
+        color: '#666666',
+        marginTop: 2,
+    },
+    postBody: {
+        fontSize: 14,
+        lineHeight: 20,
+        color: '#000000',
+        paddingHorizontal: 15,
+        paddingTop: 10,
+        paddingBottom: 10,
+    },
 });
 
 export default FeedScreen;
