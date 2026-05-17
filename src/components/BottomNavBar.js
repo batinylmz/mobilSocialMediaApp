@@ -10,24 +10,24 @@ const BottomNavBar = () => {
     return (
         <View style={styles.bottomNav}>
             <TouchableOpacity style={styles.navIconContainer} onPress={() => navigation.navigate('Feed')}>
-                <Icon name="home" size={26} color="#000000"/>
+                <Icon name="home" size={28} color="#000000"/>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.navIconContainer}>
-                <Icon name="compass" size={26} color="#000000" />
+                <Icon name="compass" size={28} color="#000000" />
             </TouchableOpacity>
 
             {/* Ortadaki + Butonu artık CreatePost ekranını açacak */}
             <TouchableOpacity style={styles.navIconContainer} onPress={() => navigation.navigate('CreatePost')}>
-                <Icon name="add-circle" size={30} color="#000000" />
+                <Icon name="add-circle" size={32} color="#000000" />
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.navIconContainer}>
-                <Icon name="person" size={26} color="#000000" />
+                <Icon name="person" size={28} color="#000000" />
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.navIconContainer}>
-                <Icon name="settings" size={26} color="#000000" />
+                <Icon name="settings" size={28} color="#000000" />
             </TouchableOpacity>
         </View>
     );
@@ -40,11 +40,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
         maxWidth: 400,
-        height: 40,
+        height: 60, // İkonların rahat durması için 60 idealdir
         alignSelf: 'center',
         paddingHorizontal: 20,
-        backgroundColor: COLORS.background,
-        paddingBottom: 5,
+        backgroundColor: '#FFFFFF',
+        paddingBottom: 10, // Alt çentikli ekranlar için güvenli alan
+
+        // --- İŞTE HER EKRANA ÇİZGİYİ ATAN YENİ ÖZELLİKLER ---
+        borderTopWidth: 1,
+        borderTopColor: '#E5E5E5', // Üst bar ile birebir aynı tonda tok gri çizgi
     },
     navIconContainer: {
         width: 36,
