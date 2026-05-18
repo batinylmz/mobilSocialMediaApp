@@ -1,109 +1,147 @@
+import Video from 'react-native-video';
+import Slider from '@react-native-community/slider';
+import firestore from '@react-native-firebase/firestore';
 import React, { useState, useRef } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity, TextInput, FlatList, RefreshControl } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {COLORS} from "../constants/theme";
 
-const MOCK_POSTS = [
-    {
-        id: '1',
-        avatarText: 'B',
-        avatarBg: '#6A1B9A',
-        authorName: 'Batın Yılmaz',       // <-- Yeni
-        authorUsername: '@batinyilmaz233',// <-- Yeni
-        title: 'F-35 Programından Çıkarılmadan Kendi Savaş...',
-        handle: '@Batın Yılmaz',
-        body: "Türkiye, 2028 ile 2030 yılları arasında hava kuvvetlerine 20 adet Block-10 KAAN 5. nesil savaş uçağı teslim edecek; bu, Ankara'nın yerli bir hayalet muharip uçak üretme yeteneğine sahip az sayıdaki ülkeden biri olma yolundaki ...",
-        mediaType: 'video',
-        mediaSource: require('../../assets/kaan.png'),
-        videoDuration: '0:45 / 1:30',
-        tags: ['#history', '#türkiye', '#success', '#stealth fighter'],
-        likes: 1300000,
-        comments: '57',
-        views: '8.2M',
-        // Yorumlar Listesi (DİNAMİK)
-        commentsList: [
-            { id: 'c1', avatar: 'M', name: 'Mustafa Özdemir', text: 'Bu çalışma gerçekten gurur verici 🇹🇷' },
-            { id: 'c2', avatar: 'A', name: 'Ahmet Yılmaz', text: 'Havacılık tarihimiz için dönüm noktası.' }
-        ]
-    },
-    {
-        id: '2',
-        avatarText: 'M',
-        avatarBg: '#0D47A1',
-        authorName: 'Mustafa Özdemir',        // <-- Yeni
-        authorUsername: '@mustafaozdemir99', // <-- Yeni
-        title: 'Türkiye Mavi Vatan\'da Egemenlik ilan edecek 🇹🇷',
-        handle: '@Mustafa Özdemir',
-        body: 'Türkiye, Kurban Bayramı sonrası Mavi Vatan kanununu meclise sunacak. Tüm Mavi Vatan sınırlarının belirlenmesi ve hukuki koruma ile devlet korumasına alınması ...',
-        mediaType: 'text',
-        mediaSource: null,
-        videoDuration: null,
-        tags: ['#MaviVatan', '#Adalar', '#Türkiye'],
-        likes: 413000,
-        comments: '239',
-        views: '7.4M',
-        // Yorumlar Listesi (DİNAMİK)
-        commentsList: [
-            { id: 'c3', avatar: 'B', name: 'Batın Yılmaz', text: 'Kesinlikle atılması gereken bir adımdı, destekliyoruz!' }
-        ]
-    }
-];
 
-// BAĞIMSIZ KART BİLEŞENİ (Her postun kalbi ve kaydetmesi kendine özel çalışır)
 const PostCard = ({ item, navigation }) => {
+    // --- DURUMLAR ---
     const [isLiked, setIsLiked] = useState(false);
-    const [likeCount, setLikeCount] = useState(item.likes);
+    const [likeCount, setLikeCount] = useState(item.likes || 0);
     const [isSaved, setIsSaved] = useState(false);
 
-    // Beğeni sayılarını şık formatlamak için yardımcı (Örn: 1300000 -> 1.3M)
+    // --- VİDEO DURUMLARI ---
+    const videoRef = useRef(null);
+    const [isPaused, setIsPaused] = useState(false);
+    const [isMuted, setIsMuted] = useState(true);
+    const [currentTime, setCurrentTime] = useState(0);
+    const [duration, setDuration] = useState(0);
+
     const formatLikes = (num) => {
         if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
         if (num >= 1000) return (num / 1000).toFixed(0) + 'K';
-        return num.toString();
+        return num ? num.toString() : '0';
     };
+
+    const formatTime = (timeInSeconds) => {
+        const mins = Math.floor(timeInSeconds / 60);
+        const secs = Math.floor(timeInSeconds % 60);
+        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    };
+
+    const avatarBgColor = item.avatarBg || '#0D47A1';
+    const avatarLetter = item.authorName ? item.authorName.charAt(0).toUpperCase() : 'U';
+    const tagList = item.tags || [];
 
     return (
         <View style={styles.cardContainer}>
+
+            {/* 1. ÜST KISIM VE YAZILAR (Tıklanınca Detaya Gider) */}
+            <TouchableOpacity
+                activeOpacity={0.9}
+                delayPressIn={100}
+                onPress={() => navigation.navigate('PostDetail', { post: item })}
+            >
+                <View style={styles.cardHeader}>
+                    <View style={[styles.avatarPlaceholder, { backgroundColor: avatarBgColor }]}>
+                        <Text style={styles.avatarText}>{avatarLetter}</Text>
+                    </View>
+                    <View style={styles.headerTextContainer}>
+                        <Text style={styles.postTitle} numberOfLines={1}>{item.authorName || 'İsimsiz Kullanıcı'}</Text>
+                        <Text style={styles.postHandle}>{item.authorUsername || '@kullanici'}</Text>
+                    </View>
+                </View>
+
+                {item.postTitle ? <Text style={[styles.postTitle, {paddingHorizontal: 15}]}>{item.postTitle}</Text> : null}
+                {item.postContent ? <Text style={styles.postBody}>{item.postContent}</Text> : null}
+            </TouchableOpacity>
+
+            {/* 2. MEDYA ALANI (Dokunma çakışmasını önlemek için parent TouchableOpacity DIŞINDA!) */}
+            {item.mediaType === 'image' && item.mediaUrl ? (
+                <View style={styles.mediaContainer}>
+                    <Image source={{ uri: item.mediaUrl }} style={styles.mediaImage} resizeMode="cover" />
+                </View>
+            ) : item.mediaType === 'video' && item.mediaUrl ? (
+                <View style={styles.mediaContainer}>
+                    <Video
+                        ref={videoRef}
+                        source={{ uri: item.mediaUrl }}
+                        style={styles.mediaImage}
+                        resizeMode="cover"
+                        repeat={true}
+                        muted={isMuted}
+                        paused={isPaused}
+                        onLoad={(data) => setDuration(data.duration)}
+                        onProgress={(data) => setCurrentTime(data.currentTime)}
+                        onError={(e) => console.log("Video Hatası: ", e)} // Konsola hata düşerse yakalarız
+                        poster="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800" // Video yüklenene kadar gösterilecek resim (Siyah ekranı çözer)
+                        posterResizeMode="cover"
+                        /* --- ANDROID EMÜLATÖR DONMA ÇÖZÜMLERİ --- */
+                        useTextureView={false} // Android'in siyah ekranda takılmasını önler
+                        playInBackground={false}
+                        ignoreSilentSwitch={"ignore"}
+                        bufferConfig={{
+                            minBufferMs: 15000,
+                            maxBufferMs: 50000,
+                            bufferForPlaybackMs: 2500,
+                            bufferForPlaybackAfterRebufferMs: 5000
+                        }}
+
+                        onLoad={(data) => setDuration(data.duration)}
+                        onProgress={(data) => setCurrentTime(data.currentTime)}
+                        onError={(e) => console.log("Video Hatası: ", e)}
+                        poster="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800"
+                        posterResizeMode="cover"
+
+                    />
+
+
+
+                    {/* VİDEO KONTROLLERİ */}
+                    <View style={styles.videoControlsBottom}>
+                        <TouchableOpacity onPress={() => setIsPaused(!isPaused)} hitSlop={{top: 15, bottom: 15, left: 15, right: 15}}>
+                            <Icon name={isPaused ? "play" : "pause"} size={22} color="#FFFFFF" />
+                        </TouchableOpacity>
+
+                        <Text style={styles.videoTimeText}>{formatTime(currentTime)}</Text>
+
+                        {/* ARTIK ÖZGÜRCE KAYDIRILABİLECEK SLIDER */}
+                        <Slider
+                            style={{ flex: 1, marginHorizontal: 5, height: 40 }} // Tıklama alanını genişlettik
+                            minimumValue={0}
+                            maximumValue={duration}
+                            value={currentTime}
+                            minimumTrackTintColor="#FF3B30"
+                            maximumTrackTintColor="rgba(255, 255, 255, 0.4)"
+                            thumbTintColor="#FFFFFF"
+                            onSlidingComplete={(value) => {
+                                videoRef.current.seek(value);
+                                setIsPaused(false);
+                            }}
+                        />
+
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, paddingRight: 5 }}>
+                            <TouchableOpacity onPress={() => setIsMuted(!isMuted)} hitSlop={{top: 15, bottom: 15, left: 15, right: 15}}>
+                                <Icon name={isMuted ? "volume-mute" : "volume-high"} size={20} color="#FFFFFF" />
+                            </TouchableOpacity>
+                            <TouchableOpacity hitSlop={{top: 15, bottom: 15, left: 15, right: 15}}>
+                                <Icon name="expand" size={18} color="#FFFFFF" />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            ) : null}
+
+            {/* 3. ETİKETLER VE ALT BUTONLAR (Burası da kendi başına tıklanabilir) */}
             <TouchableOpacity
                 activeOpacity={0.9}
                 onPress={() => navigation.navigate('PostDetail', { post: item })}
             >
-                <View style={styles.cardHeader}>
-                    <View style={[styles.avatarPlaceholder, { backgroundColor: item.avatarBg }]}>
-                        <Text style={styles.avatarText}>{item.avatarText}</Text>
-                    </View>
-                    <View style={styles.headerTextContainer}>
-                        <Text style={styles.postTitle} numberOfLines={1}>{item.title}</Text>
-                        <Text style={styles.postHandle}>{item.handle}</Text>
-                    </View>
-                </View>
-
-                <Text style={styles.postBody}>{item.body}</Text>
-
-                {item.mediaType !== 'text' && (
-                    <View style={styles.mediaContainer}>
-                        <Image source={item.mediaSource} style={styles.mediaImage} resizeMode="cover" />
-                        {item.mediaType === 'video' && (
-                            <View style={styles.videoControlsBottom}>
-                                <Icon name="play" size={18} color="#FFFFFF" />
-                                <Text style={styles.videoTimeText}>{item.videoDuration}</Text>
-
-                                <View style={styles.progressBarContainer}>
-                                    <View style={styles.progressBarFill} />
-                                </View>
-
-                                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, paddingRight: 5 }}>
-                                    <Icon name="volume-medium" size={18} color="#FFFFFF" />
-                                    <Icon name="copy-outline" size={18} color="#FFFFFF" />
-                                    <Icon name="expand" size={18} color="#FFFFFF" />
-                                </View>
-                            </View>
-                        )}
-                    </View>
-                )}
-
                 <View style={styles.tagsContainer}>
-                    {item.tags.map((tag, index) => (
+                    {tagList.map((tag, index) => (
                         <View key={index} style={styles.tagBadge}>
                             <Text style={styles.tagText}>{tag}</Text>
                         </View>
@@ -111,46 +149,267 @@ const PostCard = ({ item, navigation }) => {
                 </View>
             </TouchableOpacity>
 
-            {/* BUTONLAR BURADA TETİKLENİR VE KARTLA ÇAKIŞMAZ */}
             <View style={styles.interactionBar}>
+                {/* ... Etkileşim butonları (Beğen, Yorum vs) aynı kalacak ... */}
                 <View style={styles.interactionLeft}>
-                    <TouchableOpacity
-                        style={styles.interactionItem}
-                        onPress={() => {
-                            setIsLiked(!isLiked);
-                            setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
-                        }}
-                    >
-                        <Icon name={isLiked ? "heart" : "heart-outline"} size={24} color={isLiked ? "#FF3B30" : "#000"} />
+                    <TouchableOpacity style={styles.interactionItem} onPress={() => { setIsLiked(!isLiked); setLikeCount(isLiked ? likeCount - 1 : likeCount + 1); }}>
+                        <Icon name={isLiked ? "heart" : "heart-outline"} size={22} color={isLiked ? "#FF3B30" : "#000"} />
                         <Text style={styles.interactionText}>{formatLikes(likeCount)}</Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity style={styles.interactionItem}>
-                        <Icon name="chatbubble-outline" size={24} color="#000" />
-                        <Text style={styles.interactionText}>{item.comments}</Text>
+                        <Icon name="chatbubble-outline" size={20} color="#000" />
+                        <Text style={styles.interactionText}>{item.comments || 0}</Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity style={styles.interactionItem}>
-                        <Icon name="eye-outline" size={24} color="#000" />
-                        <Text style={styles.interactionText}>{item.views}</Text>
+                        <Icon name="eye-outline" size={22} color="#000" />
                     </TouchableOpacity>
                 </View>
-
                 <TouchableOpacity onPress={() => setIsSaved(!isSaved)}>
-                    <Icon name={isSaved ? "bookmark" : "bookmark-outline"} size={24} color={isSaved ? "#000000" : "#000"} />
+                    <Icon name={isSaved ? "bookmark" : "bookmark-outline"} size={22} color="#000" />
                 </TouchableOpacity>
             </View>
+
         </View>
     );
 };
-
 const FeedScreen = ({ navigation }) => {
+    const [posts, setPosts] = useState([]);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const flatListRef = useRef(null);
+    React.useEffect(() => {
+        // 'Posts' koleksiyonunu dinliyoruz (Senin Firebase'de yazdığın gibi baş harfi büyük)
+        const subscriber = firestore()
+            .collection('Posts')
+            .orderBy('createdAt', 'desc') // En yeni postlar en üstte görünsün
+            .onSnapshot(querySnapshot => {
+                const postsArray = [];
+
+                if (querySnapshot) {
+                    querySnapshot.forEach(documentSnapshot => {
+                        postsArray.push({
+                            id: documentSnapshot.id,
+                            ...documentSnapshot.data(),
+                        });
+                    });
+                }
+
+                setPosts(postsArray);
+            }, error => {
+                console.error("Firebase'den veri çekilirken hata:", error);
+            });
+
+        // Ekran kapanırsa dinlemeyi bırak
+        return () => subscriber();
+    }, []);
+
 
     const handleRefresh = () => {
         setIsRefreshing(true);
         setTimeout(() => setIsRefreshing(false), 1500);
+    };
+
+    // FIREBASE'E TEK TIKLA VERİ YÜKLEME FONKSİYONU
+    const uploadMockDataToFirebase = async () => {
+        const dummyData = [
+            {
+                authorName: "Togg Günlükleri",
+                authorUsername: "@togg_tr",
+                avatarText: "T",
+                avatarBg: "#00BCD4",
+                postTitle: "T10X 1.5 Yazılım Güncellemesi Yayında 🇹🇷",
+                postContent: "Togg T10X akıllı cihazlarımız için merakla beklenen 1.5 yazılım güncellemesi OTA üzerinden dağıtılmaya başlandı. Yeni arayüz tasarımı, geliştirilmiş şerit takip sistemi, yüz tanıma hızı ve Trumore entegrasyonu ile sürüş deneyimi bir üst seviyeye çıkıyor.",
+                mediaType: "image",
+                mediaUrl: "https://images.pexels.com/photos/16775824/pexels-photo-16775824.jpeg", // Doğru direkt link
+                likes: 214000,
+                comments: 1450,
+                tags: ["#togg", "#t10x", "#yerliüretim"],
+                createdAt: new Date() // Hata vermemesi için düzeltildi
+            },
+            {
+                authorName: "Kara Kartal Haber",
+                authorUsername: "@bjk_haber",
+                avatarText: "B",
+                avatarBg: "#000000",
+                postTitle: "Sahadaki Maestro: Orkun Kökçü 🦅",
+                postContent: "Orkun bu sezon orta sahada adeta bir maestro gibi takımın hücum hattını yönetiyor. Topu ayağına her aldığında tribünleri heyecanlandıran bu yetenek, şampiyonluk yolundaki en büyük kozlarımızdan biri. Sergen Yalçın dönemindeki o hücum presini hatırlatıyor!",
+                mediaType: "text",
+                mediaUrl: null,
+                likes: 185000,
+                comments: 2100,
+                tags: ["#beşiktaş", "#orkunkökçü", "#süperlig"],
+                createdAt: new Date()
+            },
+            {
+                authorName: "Spor Gündemi",
+                authorUsername: "@spor_global",
+                avatarText: "S",
+                avatarBg: "#E53935",
+                postTitle: "2026 FIFA Dünya Kupası Elemelerinde Son Durum ⚽",
+                postContent: "Kuzey Amerika'nın ev sahipliği yapacağı 2026 Dünya Kupası elemeleri tüm hızıyla devam ediyor. Yeni formatla birlikte artan takım sayısı, turnuvaya katılma şansını artırsa da grup aşamalarındaki rekabet zirveye çıkmış durumda.",
+                mediaType: "image",
+                mediaUrl: "https://images.pexels.com/photos/34201721/pexels-photo-34201721.jpeg", // Direkt jpeg'e çevrildi
+                likes: 13479,
+                comments: 890,
+                tags: ["#worldcup2026", "#futbol", "#dünyakupası"],
+                createdAt: new Date()
+            },
+            {
+                authorName: "Doğa Yürüyüşçüsü",
+                authorUsername: "@kampci_gezgin",
+                avatarText: "D",
+                avatarBg: "#2E7D32",
+                postTitle: "Hafta Sonu Kampı İçin İdeal Rota 🌲",
+                postContent: "Şehrin gürültüsünden uzaklaşıp sadece doğanın sesini dinlemek gibisi yok. Ekipmanlarınızı hazırlarken çadırınızın zemin izolasyonuna dikkat etmeyi unutmayın. Bu hafta sonu Karagöl civarında harika bir sonbahar manzarası var.",
+                mediaType: "video",
+                mediaUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4", // Test mp4 (Çalışması için)
+                videoDuration: "0:17",
+                likes: 14338,
+                comments: 410,
+                tags: ["#doğa", "#kamp", "#huzur"],
+                createdAt: new Date()
+            },
+            {
+                authorName: "Yapay Zeka Haberleri",
+                authorUsername: "@ai_turkiye",
+                avatarText: "A",
+                avatarBg: "#8E24AA",
+                postTitle: "Yapay Zeka ile Video Üretiminde Yeni Çağ 🤖",
+                postContent: "Sadece metin komutları yazarak saniyeler içinde sinematik videolar üretebilen yeni yapay zeka modelleri sektörü sarsıyor. İçerik üreticileri için sınırlar tamamen ortadan kalktı.",
+                mediaType: "video",
+                mediaUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4", // Test mp4
+                videoDuration: "0:08",
+                likes: 11459,
+                comments: 113,
+                tags: ["#yapayzeka", "#ai", "#teknoloji"],
+                createdAt: new Date()
+            },
+            {
+                authorName: "Günün Kahvesi",
+                authorUsername: "@barista_gunlugu",
+                avatarText: "G",
+                avatarBg: "#795548",
+                postTitle: "Kusursuz Espresso İçin İpuçları ☕",
+                postContent: "İyi bir espresso shot almak için kahve çekirdeklerinizin taze kavrulmuş olması kadar, öğütme derecesi ve tamping basıncı da çok önemlidir. 9 bar basınç ve 25 saniyelik akış süresi altındır.",
+                mediaType: "image",
+                mediaUrl: "https://images.pexels.com/photos/30226644/pexels-photo-30226644.jpeg", // Direkt jpeg'e çevrildi
+                likes: 37741,
+                comments: 132,
+                tags: ["#kahve", "#espresso", "#barista"],
+                createdAt: new Date()
+            },
+            {
+                authorName: "Müzik Molası",
+                authorUsername: "@vinyl_records",
+                avatarText: "M",
+                avatarBg: "#D81B60",
+                postTitle: "Plak Dinlemenin Verdiği O Nostaljik His 🎵",
+                postContent: "Dijital müziğin kusursuzluğundan sıkılanlar için plağın o hafif cızırtılı ve sıcak analog sesi her zaman sığınılacak bir limandır. Pikaba iğneyi koyduğunuz o ilk anın hissiyatı bambaşka.",
+                mediaType: "text",
+                mediaUrl: null,
+                likes: 18900,
+                comments: 245,
+                tags: ["#müzik", "#plak", "#nostalji"],
+                createdAt: new Date()
+            },
+            {
+                authorName: "Animasyon Stüdyosu",
+                authorUsername: "@3d_arts",
+                avatarText: "A",
+                avatarBg: "#F4511E",
+                postTitle: "Açık Kaynak Animasyon Projesi Yayında! 🎬",
+                postContent: "Aylardır üzerinde çalıştığımız kısa animasyon filmimizin render işlemleri nihayet bitti. Işıklandırma ve fizik motoru simülasyonları sistemlerimizi oldukça zorladı ama sonuca değdi.",
+                mediaType: "image",
+                mediaUrl: "https://images.pexels.com/photos/11901222/pexels-photo-11901222.jpeg", // Direkt jpeg'e çevrildi
+                likes: 2120,
+                comments: 11,
+                tags: ["#animasyon", "#3d", "#render", "#blender"],
+                createdAt: new Date()
+            },
+            {
+                authorName: "Finans Piyasaları",
+                authorUsername: "@ekonomi_borsa",
+                avatarText: "F",
+                avatarBg: "#00695C",
+                postTitle: "Faiz Kararları Sonrası Piyasalar Hareketli 📈",
+                postContent: "Merkez bankalarının peş peşe açıkladığı faiz oranları sonrası borsa endekslerinde dalgalanmalar sürüyor. Uzmanlar yatırımcıların portföy çeşitliliğine dikkat etmesi gerektiği konusunda uyarıyor.",
+                mediaType: "image",
+                mediaUrl: "https://images.pexels.com/photos/6694924/pexels-photo-6694924.jpeg", // Direkt jpeg'e çevrildi
+                likes: 71123,
+                comments: 634,
+                tags: ["#finans", "#borsa", "#yatırım"],
+                createdAt: new Date()
+            },
+            {
+                authorName: "Sokak Fotoğrafçılığı",
+                authorUsername: "@street_lens",
+                avatarText: "S",
+                avatarBg: "#424242",
+                postTitle: "Siyah Beyazın Çarpıcılığı 📸",
+                postContent: "Bazen renkleri ortadan kaldırmak, fotoğrafın barındırdığı duyguyu ve kompozisyonu çok daha güçlü bir şekilde izleyiciye aktarır. Gölgelerin dili her zaman daha keskindir.",
+                mediaType: "image",
+                mediaUrl: "https://images.pexels.com/photos/37109633/pexels-photo-37109633.jpeg", // Direkt jpeg'e çevrildi
+                likes: 567,
+                comments: 30,
+                tags: ["#fotoğraf", "#sokak", "#siyahbeyaz"],
+                createdAt: new Date()
+            },
+            {
+                authorName: "Geliştirici Günlüğü",
+                authorUsername: "@code_life",
+                avatarText: "C",
+                avatarBg: "#1976D2",
+                postTitle: "Gece Kodlaması ve Bug Avı 🐛",
+                postContent: "Saat sabahın 3'ü olmuş, ekrandaki hata mesajına bakıyorum, o da bana bakıyor. Konsola yazdırdığım 'buraya girdi mi' loglarının haddi hesabı yok. Yazılımcı hayatı dedikleri tam olarak bu olsa gerek.",
+                mediaType: "video",
+                mediaUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4", // Test mp4
+                videoDuration: "0:57",
+                likes: 89000,
+                comments: 1120,
+                tags: ["#yazılım", "#kodlama", "#developer"],
+                createdAt: new Date()
+            },
+            {
+                authorName: "Seyahat Rehberi",
+                authorUsername: "@gezgin_rota",
+                avatarText: "S",
+                avatarBg: "#FFB300",
+                postTitle: "Kapadokya'da Balon Turu 🎈",
+                postContent: "Gün doğarken gökyüzüne yükselen yüzlerce sıcak hava balonuyla Kapadokya'nın peribacalarını izlemek, hayatınızda en az bir kere yaşamanız gereken bir tecrübe. Manzara kelimenin tam anlamıyla nefes kesici.",
+                mediaType: "video",
+                mediaUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4", // Test mp4
+                videoDuration: "0:28",
+                likes: 145000,
+                comments: 890,
+                tags: ["#kapadokya", "#seyahat", "#türkiye"],
+                createdAt: new Date()
+            },
+            {
+                authorName: "Max Jonas",
+                authorUsername: "@jonas219",
+                avatarText: "M",
+                avatarBg: "#FFB398",
+                postTitle: "Wolsburg vs Bayern München",
+                postContent: "Gercekten çok çekişmeli bir maç oluyor",
+                mediaType: "video",
+                mediaUrl: "https://www.w3schools.com/html/mov_bbb.mp4", // Test mp4
+                videoDuration: "0:34",
+                likes: 1789,
+                comments: 33,
+                tags: ["#olise", "#football", "#germany"],
+                createdAt: new Date()
+            }
+        ];
+
+        try {
+            console.log("Veriler Firebase'e yükleniyor, lütfen bekleyin...");
+            for (const item of dummyData) {
+                // Burada id belirtmediğimiz için Firebase her birine otomatik ID atayacak
+                await firestore().collection('Posts').add(item);
+            }
+            console.log("BÜTÜN VERİLER BAŞARIYLA YÜKLENDİ! 🎉");
+        } catch (error) {
+            console.error("Yükleme sırasında hata oluştu:", error);
+        }
     };
 
     const scrollToTop = () => {
@@ -186,6 +445,15 @@ const FeedScreen = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
+
+            {/* GEÇİCİ FİREBASE BUTONU - İŞİMİZ BİTİNCE SİLECEĞİZ */}
+            <TouchableOpacity
+                style={{ backgroundColor: '#FF3B30', padding: 15, marginHorizontal: 20, borderRadius: 10, alignItems: 'center', marginBottom: 10 }}
+                onPress={uploadMockDataToFirebase}
+            >
+                <Text style={{ color: '#FFF', fontWeight: 'bold' }}>VERİLERİ FIREBASE'E FIRLAT 🚀</Text>
+            </TouchableOpacity>
+
             <View style={styles.searchContainer}>
                 <Icon name="search-outline" size={20} color="#333333" style={styles.searchIcon} />
                 <TextInput style={styles.searchInput} placeholder="Gönderi ara..." placeholderTextColor="#999999" />
@@ -194,7 +462,7 @@ const FeedScreen = ({ navigation }) => {
             <FlatList
                 style={{ flex: 1 }}
                 ref={flatListRef}
-                data={MOCK_POSTS}
+                data={posts}
                 renderItem={({ item }) => <PostCard item={item} navigation={navigation} />}
                 keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false}
